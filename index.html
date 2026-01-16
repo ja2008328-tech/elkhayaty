@@ -2,26 +2,17 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>مشروعي الأول</title>
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <title>معرض أعمالي | 2026</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1a1a1a; color: white; text-align: center; }
+        .hero { padding: 100px 20px; background: linear-gradient(45deg, #2ecc71, #27ae60); }
+        h1 { size: 3rem; }
+    </style>
 </head>
-<body style="background: #f0f0f0; text-align: center; padding-top: 50px;">
-    
-    <div style="background: white; display: inline-block; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-        <h2>🎯 تجربة بايثون</h2>
-        <input type="number" id="num" placeholder="اكتب رقماً هنا">
-        <button id="btn" py-click="test_func">اضغط للتجربة</button>
-        <p id="out"></p>
-
-        <py-script>
-def test_func(*args):
-    # الحصول على الرقم من المدخل
-    val = Element("num").element.value
-    # إظهار رسالة في الموقع
-    Element("out").write(f"لقد كتبت الرقم: {val}")
-        </py-script>
+<body>
+    <div class="hero">
+        <h1>مرحباً، أنا [اسمعك هنا] 🚀</h1>
+        <p>مبرمج ومطور واجهات ويب طموح</p>
     </div>
-
 </body>
 </html>
