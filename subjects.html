@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختيار المادة والدورة</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container { max-width: 900px; margin: 50px auto; }
+        
+        h1 { color: #00d2ff; margin-bottom: 40px; }
+
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .subject-card {
+            background: #1e293b;
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .math-card:hover { border-color: #3498db; transform: translateY(-5px); }
+        .phys-card:hover { border-color: #e67e22; transform: translateY(-5px); }
+
+        h2 { margin-bottom: 25px; }
+
+        .semester-btn {
+            display: block;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .semester-btn:hover { background: white; color: black; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>اختر المادة والدورة الدراسية</h1>
+
+        <div class="subject-grid">
+            <div class="subject-card math-card">
+                <h2 style="color: #3498db;">📐 الرياضيات</h2>
+                <a href="math-s1.html" class="semester-btn">الدورة الأولى (Semestre 1)</a>
+                <a href="math-s2.html" class="semester-btn">الدورة الثانية (Semestre 2)</a>
+            </div>
+
+            <div class="subject-card phys-card">
+                <h2 style="color: #e67e22;">⚡ الفيزياء والكيمياء</h2>
+                <a href="phys-s1.html" class="semester-btn">الدورة الأولى (Semestre 1)</a>
+                <a href="phys-s2.html" class="semester-btn">الدورة الثانية (Semestre 2)</a>
+            </div>
+        </div>
+        
+        <br>
+        <a href="index.html" style="color: #888; text-decoration: none;">← العودة للرئيسية</a>
+    </div>
+
+</body>
+</html>

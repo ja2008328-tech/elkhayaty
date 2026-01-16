@@ -3,169 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جواد الخياطي | المسار العلمي الاحترافي</title>
+    <title>موسوعة العلوم | الترحيب</title>
     <style>
-        /* تعريف الألوان العلمية */
-        :root {
-            --primary-color: #00ff88; 
-            --accent-color: #60efff; 
-            --dark-bg: #0f0c29;
-        }
-
-        /* تنسيق عام للصفحة مع خلفية متدرجة */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: white;
             margin: 0;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
+            height: 100vh;
+            text-align: center;
         }
 
-        /* حركة ظهور الأقسام */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .container {
-            max-width: 800px;
-            width: 90%;
-            margin: 40px 0;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        /* تصميم البطاقات بتأثير الزجاج */
-        section {
+        .welcome-card {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
+            padding: 50px 30px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            margin-bottom: 25px;
-            border-radius: 25px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-            transition: transform 0.3s ease;
+            max-width: 600px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        section:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
-        }
+        h1 { color: #00d2ff; font-size: 2.5rem; margin-bottom: 20px; }
+        
+        p { font-size: 1.2rem; line-height: 1.8; color: #ccc; margin-bottom: 40px; }
 
-        header {
-            text-align: center;
-            padding: 50px 20px;
-        }
-
-        .profile-icon {
-            font-size: 80px;
-            margin-bottom: 10px;
-            display: inline-block;
-            filter: drop-shadow(0 0 10px var(--primary-color));
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 2.2rem;
-            margin: 10px 0;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            border-right: 4px solid var(--primary-color);
-            padding-right: 15px;
-            margin-bottom: 20px;
-        }
-
-        /* تنسيق شبكة المواد العلمية */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-        }
-
-        .item {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: bold;
-            transition: 0.3s;
-            border: 1px solid transparent;
-        }
-
-        .item:hover {
-            background: var(--primary-color);
-            color: #000;
-            box-shadow: 0 0 20px var(--primary-color);
-        }
-
-        /* تنسيق الزر الاحترافي */
-        .btn {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-            color: #000;
+        .enter-btn {
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+            color: white;
             text-decoration: none;
-            padding: 15px 40px;
+            padding: 15px 50px;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1.1rem;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
-            transition: 0.4s;
+            font-size: 1.3rem;
+            transition: 0.3s;
+            display: inline-block;
+            box-shadow: 0 5px 20px rgba(0, 210, 255, 0.4);
         }
 
-        .btn:hover {
-            letter-spacing: 1px;
-            box-shadow: 0 6px 25px rgba(96, 239, 255, 0.6);
-            transform: scale(1.05);
-        }
-
-        footer {
-            margin-top: auto;
-            padding: 30px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
+        .enter-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(0, 210, 255, 0.6);
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="profile-icon">👨‍🔬</div>
-        <h1>جواد الخياطي</h1>
-        <p style="font-size: 1.2rem; color: #ccc;">طالب جذع مشترك علمي | خيار فرنسية</p>
-    </header>
-
-    <div class="container">
-        <section>
-            <h2>🎯 الهوية الأكاديمية</h2>
-            <p>أدرس في الثانوية التأهيلية بالأمويين. أطمح للتميز في المسار العلمي، حيث أجمع بين الشغف بالرياضيات والفيزياء وبين مهارات بناء المواقع الإلكترونية الحديثة.</p>
-        </section>
-
-        <section>
-            <h2>🧬 القوة العلمية</h2>
-            <div class="grid">
-                <div class="item">الرياضيات</div>
-                <div class="item">الفيزياء</div>
-                <div class="item">المعلوماتيات</div>
-                <div class="item">SVT</div>
-            </div>
-        </section>
-
-        <section style="text-align: center;">
-            <h2>💻 مشاريعه الرقمية</h2>
-            <p>يمكنكم متابعة رحلتي في تعلم البرمجة وتطوير الواجهات عبر منصة GitHub.</p>
-            <a href="https://github.com/ja2008328-tech" class="btn">زيارة ملفي البرمجي</a>
-        </section>
+    <div class="welcome-card">
+        <h1>مرحباً بكم في موسوعة العلوم 🧬</h1>
+        <p>
+            هذا الموقع مخصص حصرياً لتلاميذ **الجذع المشترك العلمي**. 
+            نقدم لكم هنا تجميعة لأهم **الفروض المحروسة** التي تتكرر باستمرار، 
+            لمساعدتكم على التحضير الجيد والتميز في مساركم الدراسي.
+        </p>
+        <a href="subjects.html" class="enter-btn">اضغط للدخول</a>
     </div>
-
-    <footer>
-        &copy; 2026 جواد الخياطي. تم التطوير بكل شغف 🚀
-    </footer>
 
 </body>
 </html>

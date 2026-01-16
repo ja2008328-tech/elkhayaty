@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروض الرياضيات | الدورة الأولى</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container { max-width: 800px; margin: 50px auto; }
+        
+        h1 { color: #3498db; margin-bottom: 10px; }
+        .subtitle { color: #ccc; margin-bottom: 40px; }
+
+        .exams-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .exam-button {
+            background: #1e293b;
+            color: white;
+            text-decoration: none;
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.3rem;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exam-button:hover {
+            background: #3498db;
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .exam-icon { font-size: 1.5rem; }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            color: #888;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📐 الرياضيات - الدورة الأولى</h1>
+        <p class="subtitle">اختر الفرض الذي تود مراجعته</p>
+
+        <div class="exams-list">
+            <a href="math-s1-c1.html" class="exam-button">
+                <span>الفرض المحروس الأول</span>
+                <span class="exam-icon">📝</span>
+            </a>
+
+            <a href="math-s1-c2.html" class="exam-button">
+                <span>الفرض المحروس الثاني</span>
+                <span class="exam-icon">📝</span>
+            </a>
+
+            <a href="math-s1-c3.html" class="exam-button">
+                <span>الفرض المحروس الثالث</span>
+                <span class="exam-icon">📝</span>
+            </a>
+        </div>
+        
+        <a href="subjects.html" class="back-link">← العودة لاختيار المادة</a>
+    </div>
+
+</body>
+</html>
