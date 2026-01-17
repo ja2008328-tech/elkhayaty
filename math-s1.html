@@ -10,7 +10,7 @@
     <style>
         :root { --math: #3498db; --correct: #2ecc71; --bg: #0f172a; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        body { background-color: var(--bg); color: white; }
+        body { background-color: var(--bg); color: white; overflow-x: hidden; }
 
         nav { 
             background: rgba(30, 41, 59, 0.9); 
@@ -19,8 +19,9 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
+            position: sticky; top: 0; z-index: 1000;
         }
-        .nav-logo { font-weight: 900; color: var(--math); font-size: 1.2rem; }
+        .nav-logo { font-weight: 900; color: var(--math); font-size: 1.1rem; }
 
         .nav-link { 
             color: white; 
@@ -31,27 +32,31 @@
             border-radius: 5px;
             border: 1px solid rgba(255, 255, 255, 0.4);
             transition: 0.3s ease-in-out;
-            display: inline-block;
         }
         .nav-link:hover { border-color: var(--math); color: var(--math); }
 
-        .container { max-width: 950px; margin: 50px auto; padding: 0 20px; }
-        .header-area { text-align: center; margin-bottom: 60px; }
-        .header-area h1 { font-weight: 900; font-size: 2.5rem; color: var(--math); margin-bottom: 10px; }
-        .header-area p { color: #94a3b8; font-weight: 400; }
+        .container { max-width: 950px; margin: 30px auto; padding: 0 15px; }
+        .header-area { text-align: center; margin-bottom: 40px; }
+        .header-area h1 { font-weight: 900; font-size: 2rem; color: var(--math); margin-bottom: 10px; }
+        .header-area p { color: #94a3b8; font-size: 0.95rem; }
 
-        .exam-section { margin-bottom: 60px; }
+        .exam-section { margin-bottom: 40px; }
         .section-title { 
-            display: inline-block; font-weight: 900; font-size: 1.1rem; color: var(--math); 
-            background: rgba(52, 152, 219, 0.1); padding: 8px 25px; border-radius: 4px;
-            border-right: 4px solid var(--math); margin-bottom: 25px;
+            display: inline-block; font-weight: 900; font-size: 1rem; color: var(--math); 
+            background: rgba(52, 152, 219, 0.1); padding: 8px 20px; border-radius: 4px;
+            border-right: 4px solid var(--math); margin-bottom: 20px;
         }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .dual-card { display: flex; background: #1e293b; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); height: 55px; transition: 0.3s; }
-        .dual-card:hover { transform: translateY(-5px); border-color: var(--math); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        
+        .dual-card { 
+            display: flex; background: #1e293b; border-radius: 8px; 
+            overflow: hidden; border: 1px solid rgba(255,255,255,0.05); 
+            height: 55px; transition: 0.3s; 
+        }
+        .dual-card:hover { transform: translateY(-3px); border-color: var(--math); }
 
-        .exam-btn { flex: 3; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem; }
+        .exam-btn { flex: 2.5; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
         .cor-btn { 
             flex: 1.2; background: var(--correct); color: #0f172a; text-decoration: none; 
             display: none; align-items: center; justify-content: center; 
@@ -63,6 +68,28 @@
         .cor-btn:hover { background: #27ae60; }
 
         footer { text-align: center; padding: 40px; color: #475569; font-size: 0.8rem; font-weight: 600; }
+
+        /* --- تعديلات الهاتف الذكي --- */
+        @media (max-width: 600px) {
+            .header-area h1 { font-size: 1.6rem; }
+            .grid { grid-template-columns: 1fr; } /* بطاقة واحدة في السطر */
+            
+            .dual-card { 
+                height: 100px; /* زيادة الارتفاع ليتسع لزرين فوق بعضهما */
+                flex-direction: column; 
+            }
+            
+            .exam-btn { 
+                border-bottom: 1px solid rgba(255,255,255,0.05); 
+                font-size: 0.95rem; 
+            }
+            
+            .cor-btn { 
+                flex: 1; 
+                width: 100%; 
+                font-size: 0.85rem; 
+            }
+        }
     </style>
 </head>
 <body>
@@ -118,7 +145,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <footer>جميع الحقوق محفوظة منصة العلوم 2026</footer>
