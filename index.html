@@ -3,64 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موسوعة العلوم | الترحيب</title>
+    <title>الجذع المشترك العلمي | الرئيسية</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
+        :root {
+            --primary: #2ecc71; /* الأخضر كلون أساسي للبداية */
+            --phys: #ff4757;
+            --math: #00d2ff;
+            --bg: #0f172a;
+            --sidebar-bg: #1e293b;
+            --text: #f8fafc;
+            --title: #2ecc71; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: white;
-            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
             display: flex;
-            justify-content: center;
-            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- القائمة الجانبية --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            padding: 40px 20px;
             height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--title);
+            margin-bottom: 40px;
             text-align: center;
         }
 
-        .welcome-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 50px 30px;
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 600px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        h1 { color: #00d2ff; font-size: 2.5rem; margin-bottom: 20px; }
-        
-        p { font-size: 1.2rem; line-height: 1.8; color: #ccc; margin-bottom: 40px; }
-
-        .enter-btn {
-            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
-            color: white;
+        .menu-link {
+            display: block;
+            color: #94a3b8;
             text-decoration: none;
-            padding: 15px 50px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.3rem;
-            transition: 0.3s;
-            display: inline-block;
-            box-shadow: 0 5px 20px rgba(0, 210, 255, 0.4);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            transition: 0.3s ease;
+            cursor: pointer;
         }
 
-        .enter-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(0, 210, 255, 0.6);
+        /* اللون الأخضر عند التمرير في القائمة الجانبية */
+        .menu-link:hover {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--primary);
+            transform: translateX(-5px);
+        }
+
+        .menu-link.active {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--primary);
+        }
+
+        /* --- المحتوى الرئيسي --- */
+        .main-content {
+            flex: 1;
+            margin-right: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        }
+
+        .main-title {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .phys-color { color: var(--phys); text-shadow: 0 0 15px rgba(255, 71, 87, 0.2); }
+        .math-color { color: var(--math); text-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 700px;
+            margin-bottom: 45px;
+            line-height: 1.8;
+        }
+
+        /* زر البداية الأخضر (Start) */
+        .cta-btn {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: #0f172a;
+            padding: 16px 45px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+            transition: 0.3s;
+        }
+
+        .cta-btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.5); 
+        }
+
+        /* --- الصناديق المنبثقة --- */
+        .info-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.95); display: none;
+            justify-content: center; align-items: center; z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .info-card {
+            background: #1e293b; padding: 40px; border-radius: 16px;
+            max-width: 400px; width: 90%; position: relative;
+            border: 1px solid var(--primary); text-align: center;
+        }
+
+        .close-btn {
+            position: absolute; top: 15px; left: 15px; background: none;
+            border: none; color: white; font-size: 1.8rem; cursor: pointer;
+        }
+
+        .icon-container { display: flex; justify-content: center; gap: 40px; margin-top: 30px; }
+        .icon-link { width: 70px; height: 70px; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-size: 2.2rem; color: white; transition: 0.4s ease; }
+        .whatsapp-icon { background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); }
+        .gmail-icon { background: linear-gradient(135deg, #ea4335 0%, #c5221f 100%); }
+        .icon-link:hover { transform: scale(1.2) rotate(10deg); }
+
+        footer { margin-top: 60px; font-size: 0.85rem; color: #475569; font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-right: 0; }
+            .main-title { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="welcome-card">
-        <h1>مرحباً بكم في موسوعة العلوم 🧬</h1>
-        <p>
-            هذا الموقع مخصص حصرياً لتلاميذ **الجذع المشترك العلمي**. 
-            نقدم لكم هنا تجميعة لأهم **الفروض المحروسة** التي تتكرر باستمرار، 
-            لمساعدتكم على التحضير الجيد والتميز في مساركم الدراسي.
-        </p>
-        <a href="subjects.html" class="enter-btn">اضغط للدخول</a>
+    <aside class="sidebar">
+        <div class="logo">الجذع المشترك العلمي</div>
+        <div class="menu-link active" onclick="location.reload()">الرئيسية</div>
+        <div class="menu-link" onclick="openModal('about-modal')">لمحة عن التطبيق</div>
+        <div class="menu-link" onclick="openModal('dev-modal')">المطور</div>
+        <div class="menu-link" onclick="openModal('contact-modal')">تواصل معي</div>
+    </aside>
+
+    <main class="main-content">
+        <h1 class="main-title">
+            بوابتك للتميز في <br> 
+            <span class="phys-color">الفيزياء والكيمياء</span> و <span class="math-color">الرياضيات</span>
+        </h1>
+        <p class="subtitle">المنصة الشاملة والمبسطة لتلاميذ الجذع المشترك العلمي. فروض محروسة، نماذج امتحانات، وتصحيحات دقيقة.</p>
+        <a href="subjects.html" class="cta-btn">تصفح الفروض</a>
+        <footer>تم التطوير بواسطة جواد الخياطي &copy; 2026</footer>
+    </main>
+
+    <div id="about-modal" class="info-overlay">
+        <div class="info-card">
+            <button class="close-btn" onclick="closeModal('about-modal')">×</button>
+            <h2 style="color: var(--primary);">لمحة عن التطبيق</h2>
+            <p style="color: #cbd5e1; margin-top: 15px;">منصة تعليمية متخصصة لتوفير نماذج الفروض لمساعدة التلاميذ على التفوق الدراسي.</p>
+        </div>
     </div>
+
+    <div id="dev-modal" class="info-overlay">
+        <div class="info-card">
+            <button class="close-btn" onclick="closeModal('dev-modal')">×</button>
+            <h2 style="color: var(--primary);">المطور</h2>
+            <p style="color: #cbd5e1; margin-top: 15px;">تم تطوير هذه المنصة بواسطة <strong>جواد الخياطي</strong>.</p>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="info-overlay">
+        <div class="info-card">
+            <button class="close-btn" onclick="closeModal('contact-modal')">×</button>
+            <h2 style="color: var(--primary);">تواصل معي</h2>
+            <div class="icon-container">
+                <a href="https://wa.me/212624507606" target="_blank" class="icon-link whatsapp-icon"><i class="fab fa-whatsapp"></i></a>
+                <a href="mailto:ja2008328@gmail.com" class="icon-link gmail-icon"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        window.onclick = function(event) { if (event.target.className === 'info-overlay') { event.target.style.display = 'none'; } }
+    </script>
 
 </body>
 </html>

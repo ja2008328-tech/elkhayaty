@@ -3,77 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختيار المادة والدورة</title>
+    <title>اختيار المادة | الجذع المشترك</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0f172a;
-            color: white;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
+        :root { 
+            --math: #3498db; 
+            --phys: #ff4757; 
+            --bg: #0f172a; 
+            --card: #1e293b; 
+            --title: #2ecc71; 
         }
-
-        .container { max-width: 900px; margin: 50px auto; }
         
-        h1 { color: #00d2ff; margin-bottom: 40px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg); color: white; }
 
-        .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+        /* شريط التنقل */
+        nav { 
+            background: rgba(30, 41, 59, 0.9); 
+            padding: 15px 5%; 
+            border-bottom: 1px solid rgba(255,255,255,0.05); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .nav-logo { font-weight: 900; color: var(--title); font-size: 1.2rem; }
+
+        /* زر العودة المطابق للصور (إطار رقيق ونص واضح) */
+        .nav-link { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            padding: 5px 18px; 
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.4); /* إطار أبيض شفاف في البداية */
+            transition: 0.3s ease-in-out;
+            display: inline-block;
         }
 
-        .subject-card {
-            background: #1e293b;
-            border-radius: 20px;
-            padding: 25px;
-            border: 2px solid transparent;
+        /* الحالة عند تمرير الماوس بشكل عام */
+        .nav-link:hover {
+            border-color: var(--title);
+            color: var(--title);
+        }
+
+        .container { max-width: 900px; margin: 50px auto; padding: 0 20px; }
+        .header-area { text-align: center; margin-bottom: 60px; }
+        .header-area h1 { font-weight: 900; font-size: 2.2rem; line-height: 1.4; margin-bottom: 15px; }
+        .title-phys { color: var(--phys); }
+        .title-math { color: var(--math); }
+
+        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        
+        /* تأثير الانبثاق للبطاقات */
+        .subject-card { 
+            background: var(--card); 
+            border-radius: 12px; 
+            padding: 40px; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            text-align: center; 
+        }
+
+        /* تفاعل البطاقات وتأثيرها على الزر العلوي */
+        .math-card:hover { transform: translateY(-10px); border-color: var(--math); box-shadow: 0 10px 30px rgba(52, 152, 219, 0.2); }
+        .phys-card:hover { transform: translateY(-10px); border-color: var(--phys); box-shadow: 0 10px 30px rgba(255, 71, 87, 0.2); }
+
+        .math-title { color: var(--math); font-weight: 900; font-size: 1.8rem; margin-bottom: 25px; }
+        .phys-title { color: var(--phys); font-weight: 900; font-size: 1.8rem; margin-bottom: 25px; }
+
+        .btn-semester {
+            display: block; padding: 15px; margin: 12px 0; border-radius: 6px;
+            text-decoration: none; color: white; font-weight: 700;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
             transition: 0.3s;
         }
+        
+        .math-card .btn-semester:hover { background: var(--math); color: #0f172a; }
+        .phys-card .btn-semester:hover { background: var(--phys); color: #0f172a; }
 
-        .math-card:hover { border-color: #3498db; transform: translateY(-5px); }
-        .phys-card:hover { border-color: #e67e22; transform: translateY(-5px); }
-
-        h2 { margin-bottom: 25px; }
-
-        .semester-btn {
-            display: block;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            text-decoration: none;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .semester-btn:hover { background: white; color: black; }
+        footer { text-align: center; padding: 40px; color: #475569; font-size: 0.8rem; font-weight: 600; }
     </style>
 </head>
 <body>
+    <nav>
+        <div class="nav-logo">الجذع المشترك العلمي</div>
+        <a href="index.html" class="nav-link">العودة</a>
+    </nav>
 
     <div class="container">
-        <h1>اختر المادة والدورة الدراسية</h1>
+        <div class="header-area">
+            <h1><span class="title-phys">الفيزياء والكيمياء</span> و <span class="title-math">الرياضيات</span></h1>
+        </div>
 
-        <div class="subject-grid">
+        <div class="subjects-grid">
             <div class="subject-card math-card">
-                <h2 style="color: #3498db;">📐 الرياضيات</h2>
-                <a href="math-s1.html" class="semester-btn">الدورة الأولى (Semestre 1)</a>
-                <a href="math-s2.html" class="semester-btn">الدورة الثانية (Semestre 2)</a>
+                <h2 class="math-title">الرياضيات</h2>
+                <a href="math-s1.html" class="btn-semester">الدورة الأولى</a>
+                <a href="#" class="btn-semester">الدورة الثانية</a>
             </div>
 
             <div class="subject-card phys-card">
-                <h2 style="color: #e67e22;">⚡ الفيزياء والكيمياء</h2>
-                <a href="phys-s1.html" class="semester-btn">الدورة الأولى (Semestre 1)</a>
-                <a href="phys-s2.html" class="semester-btn">الدورة الثانية (Semestre 2)</a>
+                <h2 class="phys-title">الفيزياء والكيمياء</h2>
+                <a href="phys-s1.html" class="btn-semester">الدورة الأولى</a>
+                <a href="#" class="btn-semester">الدورة الثانية</a>
             </div>
         </div>
-        
-        <br>
-        <a href="index.html" style="color: #888; text-decoration: none;">← العودة للرئيسية</a>
     </div>
-
+    <footer>جميع الحقوق محفوظة منصة العلوم &copy; 2026</footer>
 </body>
 </html>

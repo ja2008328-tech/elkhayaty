@@ -3,87 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فروض الرياضيات | الدورة الأولى</title>
+    <title>فروض الفيزياء والكيمياء | الدورة الأولى</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0f172a;
-            color: white;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .container { max-width: 800px; margin: 50px auto; }
+        :root { --phys: #ff4757; --correct: #2ecc71; --bg: #0f172a; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         
-        h1 { color: #3498db; margin-bottom: 10px; }
-        .subtitle { color: #ccc; margin-bottom: 40px; }
+        body { background-color: var(--bg); color: white; }
 
-        .exams-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
+        /* شريط التنقل */
+        nav { 
+            background: rgba(30, 41, 59, 0.9); 
+            padding: 15px 5%; 
+            border-bottom: 1px solid rgba(255,255,255,0.05); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
         }
+        
+        .nav-logo { font-weight: 900; color: var(--phys); font-size: 1.2rem; }
 
-        .exam-button {
-            background: #1e293b;
-            color: white;
-            text-decoration: none;
-            width: 100%;
-            max-width: 500px;
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
-            font-size: 1.3rem;
-            font-weight: bold;
-            transition: 0.3s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .exam-button:hover {
-            background: #3498db;
-            transform: scale(1.03);
-            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
-        }
-
-        .exam-icon { font-size: 1.5rem; }
-
-        .back-link {
+        /* زر العودة الموحد */
+        .nav-link { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            padding: 5px 18px; 
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: 0.3s ease-in-out;
             display: inline-block;
-            margin-top: 40px;
-            color: #888;
-            text-decoration: none;
         }
+
+        .nav-link:hover {
+            border-color: var(--phys);
+            color: var(--phys);
+        }
+
+        .container { max-width: 950px; margin: 50px auto; padding: 0 20px; }
+        
+        .header-area { text-align: center; margin-bottom: 60px; }
+        .header-area h1 { font-weight: 900; font-size: 2.5rem; color: var(--phys); margin-bottom: 10px; }
+        .header-area p { color: #94a3b8; font-weight: 400; }
+
+        .exam-section { margin-bottom: 60px; }
+        .section-title { 
+            display: inline-block; font-weight: 900; font-size: 1.1rem; color: var(--phys); 
+            background: rgba(255, 71, 87, 0.1); padding: 8px 25px; border-radius: 4px;
+            border-right: 4px solid var(--phys); margin-bottom: 25px;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+        .dual-card { display: flex; background: #1e293b; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); height: 55px; transition: 0.3s; }
+        .dual-card:hover { transform: translateY(-5px); border-color: var(--phys); }
+
+        .exam-btn { flex: 3; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem; }
+        .cor-btn { 
+            flex: 1.2; background: var(--correct); color: #0f172a; text-decoration: none; 
+            display: none; align-items: center; justify-content: center; 
+            font-weight: 900; font-size: 0.8rem; 
+        }
+
+        .has-correction .cor-btn { display: flex; }
+        
+        .exam-btn:hover { background: rgba(255,255,255,0.03); }
+        .cor-btn:hover { background: #27ae60; }
+
+        footer { text-align: center; padding: 40px; color: #475569; font-size: 0.8rem; font-weight: 600; }
     </style>
 </head>
 <body>
+    <nav>
+        <div class="nav-logo">الفيزياء TCSF</div>
+        <a href="subjects.html" class="nav-link">العودة</a>
+    </nav>
 
     <div class="container">
-        <h1>📐 الرياضيات - الدورة الأولى</h1>
-        <p class="subtitle">اختر الفرض الذي تود مراجعته</p>
-
-        <div class="exams-list">
-            <a href="math-s1-c1.html" class="exam-button">
-                <span>الفرض المحروس الأول</span>
-                <span class="exam-icon">📝</span>
-            </a>
-
-            <a href="math-s1-c2.html" class="exam-button">
-                <span>الفرض المحروس الثاني</span>
-                <span class="exam-icon">📝</span>
-            </a>
-
-            <a href="math-s1-c3.html" class="exam-button">
-                <span>الفرض المحروس الثالث</span>
-                <span class="exam-icon">📝</span>
-            </a>
+        <div class="header-area">
+            <h1>نماذج فروض الفيزياء</h1>
+            <p>الجذع المشترك العلمي - الدورة الأولى</p>
         </div>
-        
-        <a href="subjects.html" class="back-link">← العودة لاختيار المادة</a>
+
+        <div class="exam-section">
+            <div class="section-title">الفرض المحروس الأول</div>
+            <div class="grid">
+                <div class="dual-card has-correction">
+                    <a href="p_s1/p_s1_n (1).pdf" class="exam-btn" target="_blank">النموذج الأول</a>
+                    <a href="p_s1/p_s1_c (1).pdf" class="cor-btn" target="_blank">التصحيح</a>
+                </div>
+                <div class="dual-card has-correction">
+                    <a href="p_s1/p_s1_n (2).pdf" class="exam-btn" target="_blank">النموذج الثاني</a>
+                    <a href="p_s1/p_s1_c (2).pdf" class="cor-btn" target="_blank">التصحيح</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <div class="section-title">الفرض المحروس الثاني</div>
+            <div class="grid">
+                <div class="dual-card has-correction">
+                    <a href="p_s1/p_s1_n (3).pdf" class="exam-btn" target="_blank">النموذج الأول</a>
+                    <a href="p_s1/p_s1_c (3).pdf" class="cor-btn" target="_blank">التصحيح</a>
+                </div>
+                <div class="dual-card has-correction">
+                    <a href="p_s1/p_s1_n (4).pdf" class="exam-btn" target="_blank">النموذج الثاني</a>
+                    <a href="p_s1/p_s1_c (4).pdf" class="cor-btn" target="_blank">التصحيح</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <div class="section-title">الفرض المحروس الثالث</div>
+            <div class="grid">
+                <div class="dual-card has-correction">
+                    <a href="p_s1/p_s1_n (5).pdf" class="exam-btn" target="_blank">النموذج الأول</a>
+                    <a href="p_s1/p_s1_c (5).pdf" class="cor-btn" target="_blank">التصحيح</a>
+                </div>
+                <div class="dual-card has-correction">
+                    <a href="p_s1/p_s1_n (6).pdf" class="exam-btn" target="_blank">النموذج الثاني</a>
+                    <a href="p_s1/p_s1_c (6).pdf" class="cor-btn" target="_blank">التصحيح</a>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <footer>جميع الحقوق محفوظة منصة العلوم 2026</footer>
 </body>
 </html>
