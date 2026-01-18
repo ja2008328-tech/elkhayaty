@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الجذع المشترك العلمي | الرئيسية</title>
+    <title>منصة التميز | اختيار المسار الدراسي</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --primary: #2ecc71; 
-            --phys: #ff4757;
-            --math: #00d2ff;
+            --primary: #2ecc71;
+            --secondary: #3498db;
+            --prep-color: #f1c40f;
             --bg: #0f172a;
-            --sidebar-bg: #1e293b;
+            --card-bg: #1e293b;
             --text: #f8fafc;
-            --title: #2ecc71; 
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
@@ -26,190 +25,188 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            display: flex;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
             overflow-x: hidden;
         }
 
-        /* --- القائمة الجانبية --- */
-        .sidebar {
-            width: 260px;
-            background-color: var(--sidebar-bg);
-            border-left: 1px solid rgba(255,255,255,0.1);
-            padding: 40px 20px;
-            height: 100vh;
-            position: fixed;
-            right: 0;
-            top: 0;
-            display: flex;
-            flex-direction: column;
-            z-index: 1000;
-            transition: 0.4s ease-in-out;
-        }
-
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: var(--title);
-            margin-bottom: 40px;
+        /* العنوان الرئيسي */
+        .hero-section {
             text-align: center;
+            margin-top: 40px;
+            margin-bottom: 50px;
         }
 
-        .menu-link {
-            display: block;
-            color: #94a3b8;
-            text-decoration: none;
-            padding: 12px 15px;
-            border-radius: 8px;
+        .hero-section h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 900;
             margin-bottom: 10px;
-            font-weight: 700;
-            transition: 0.3s ease;
-            cursor: pointer;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .menu-link:hover, .menu-link.active {
-            background: rgba(46, 204, 113, 0.15);
-            color: var(--primary);
-            transform: translateX(-5px);
+        .hero-section p {
+            color: #94a3b8;
+            font-weight: 600;
         }
 
-        /* --- المحتوى الرئيسي --- */
-        .main-content {
-            flex: 1;
-            margin-right: 260px;
+        /* حاوية الأقسام الدراسي */
+        .main-container {
+            width: 100%;
+            max-width: 1100px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            gap: 40px;
+        }
+
+        .section-group {
+            width: 100%;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-right: 10px;
+            border-right: 4px solid var(--primary);
+        }
+
+        .section-header h2 { font-size: 1.5rem; font-weight: 800; }
+
+        /* شبكة البطاقات المتجاوبة */
+        .cards-grid {
+            display: grid;
+            /* تجعل العناصر تتوزع تلقائياً وتصغر وتكبر حسب عرض الشاشة */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .portal-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 35px 25px;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 40px;
-            min-height: 100vh;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .portal-card i {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
             transition: 0.3s;
         }
 
-        .main-title {
-            font-size: 3rem;
-            font-weight: 900;
-            line-height: 1.5;
-            margin-bottom: 25px;
+        .portal-card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; }
+        .portal-card p { font-size: 0.95rem; color: #94a3b8; line-height: 1.6; }
+
+        /* ألوان مخصصة لكل صنف */
+        .card-prep i { color: var(--prep-color); }
+        .card-prep:hover { border-color: var(--prep-color); }
+
+        .card-secondary i { color: var(--secondary); }
+        .card-secondary:hover { border-color: var(--secondary); }
+
+        .card-tcs i { color: var(--primary); }
+
+        /* تأثير اللمعان عند التحويم */
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.5s;
+        }
+        .portal-card:hover::before { left: 100%; }
+
+        /* تذييل الصفحة */
+        footer {
+            margin-top: 60px;
+            padding: 20px;
+            text-align: center;
+            color: #475569;
+            font-size: 0.9rem;
+            font-weight: 700;
         }
 
-        .phys-color { color: var(--phys); text-shadow: 0 0 15px rgba(255, 71, 87, 0.2); }
-        .math-color { color: var(--math); text-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #94a3b8;
-            max-width: 700px;
-            margin-bottom: 45px;
-            line-height: 1.8;
+        /* لمسة للهاتف الصغير جداً */
+        @media (max-width: 400px) {
+            .cards-grid { grid-template-columns: 1fr; }
+            .hero-section h1 { font-size: 1.5rem; }
         }
-
-        .cta-btn {
-            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
-            color: #0f172a;
-            padding: 16px 45px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 900;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
-            transition: 0.3s;
-        }
-
-        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(46, 204, 113, 0.5); }
-
-        /* زر القائمة للهاتف */
-        .menu-toggle {
-            display: none;
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            background: var(--primary);
-            color: #0f172a;
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            z-index: 1100;
-            cursor: pointer;
-        }
-
-        /* --- استعلامات الوسائط للهاتف --- */
-        @media (max-width: 768px) {
-            .sidebar { right: -260px; } /* إخفاء القائمة */
-            .sidebar.active-sidebar { right: 0; } /* إظهارها عند النقر */
-            
-            .menu-toggle { display: block; } /* إظهار زر ☰ */
-            
-            .main-content { margin-right: 0; padding: 20px; }
-            
-            .main-title { font-size: 1.8rem; margin-top: 50px; } /* تصغير العنوان */
-            .subtitle { font-size: 0.95rem; margin-bottom: 30px; }
-            
-            .cta-btn { width: 85%; padding: 14px; font-size: 1rem; }
-        }
-
-        /* --- الصناديق المنبثقة --- */
-        .info-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.95); display: none;
-            justify-content: center; align-items: center; z-index: 2000;
-            backdrop-filter: blur(5px);
-        }
-
-        .info-card {
-            background: #1e293b; padding: 40px; border-radius: 16px;
-            max-width: 400px; width: 90%; position: relative;
-            border: 1px solid var(--primary); text-align: center;
-        }
-
-        .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; }
-        .icon-container { display: flex; justify-content: center; gap: 40px; margin-top: 30px; }
-        .icon-link { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-size: 1.8rem; color: white; transition: 0.3s; }
-        .whatsapp-icon { background: #25d366; }
-        .gmail-icon { background: #ea4335; }
-        footer { margin-top: 60px; font-size: 0.8rem; color: #475569; }
     </style>
 </head>
 <body>
 
-    <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    <section class="hero-section">
+        <h1>منصة التميز التعليمية</h1>
+        <p>بوابتك الذكية لحساب المعدلات وتتبع النتائج</p>
+    </section>
 
-    <aside class="sidebar">
-        <div class="logo">الجذع المشترك العلمي</div>
-        <div class="menu-link active" onclick="location.reload()">الرئيسية</div>
-        <div class="menu-link" onclick="openModal('about-modal')">لمحة عن التطبيق</div>
-        <div class="menu-link" onclick="openModal('dev-modal')">المطور</div>
-        <div class="menu-link" onclick="openModal('contact-modal')">تواصل معي</div>
-    </aside>
-
-    <main class="main-content">
-        <h1 class="main-title">
-            بوابتك للتميز في <br> 
-            <span class="phys-color">الفيزياء والكيمياء</span> و <span class="math-color">الرياضيات</span>
-        </h1>
-        <p class="subtitle">المنصة الشاملة والمبسطة لتلاميذ الجذع المشترك العلمي. فروض محروسة، نماذج امتحانات، وتصحيحات دقيقة.</p>
-        <a href="subjects.html" class="cta-btn">تصفح الفروض</a>
-        <footer>تم التطوير بواسطة جواد الخياطي &copy; 2026</footer>
-    </main>
-
-    <div id="about-modal" class="info-overlay"><div class="info-card"><button class="close-btn" onclick="closeModal('about-modal')">×</button><h2 style="color: var(--primary);">لمحة عن التطبيق</h2><p style="color: #cbd5e1; margin-top: 15px;">منصة تعليمية متخصصة لتوفير نماذج الفروض لمساعدة التلاميذ على التفوق الدراسي.</p></div></div>
-    <div id="dev-modal" class="info-overlay"><div class="info-card"><button class="close-btn" onclick="closeModal('dev-modal')">×</button><h2 style="color: var(--primary);">المطور</h2><p style="color: #cbd5e1; margin-top: 15px;">تم تطوير هذه المنصة بواسطة <strong>جواد الخياطي</strong>.</p></div></div>
-    <div id="contact-modal" class="info-overlay"><div class="info-card"><button class="close-btn" onclick="closeModal('contact-modal')">×</button><h2 style="color: var(--primary);">تواصل معي</h2><div class="icon-container"><a href="https://wa.me/212624507606" target="_blank" class="icon-link whatsapp-icon"><i class="fab fa-whatsapp"></i></a><a href="mailto:ja2008328@gmail.com" class="icon-link gmail-icon"><i class="fas fa-envelope"></i></a></div></div></div>
-
-    <script>
-        function toggleSidebar() { document.querySelector('.sidebar').classList.toggle('active-sidebar'); }
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    <div class="main-container">
         
-        // إغلاق القائمة عند النقر خارجها أو على رابط (للهاتف)
-        window.onclick = function(event) { 
-            if (event.target.className === 'info-overlay') closeModal(event.target.id);
-        }
-    </script>
+        <div class="section-group">
+            <div class="section-header">
+                <h2>السلك الإعدادي</h2>
+            </div>
+            <div class="cards-grid">
+                <a href="prep.html" class="portal-card card-prep">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>الثانوي الإعدادي</h3>
+                    <p>حساب معدل الدورة والامتحان الموحد (1، 2، 3 إعدادي)</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="section-group">
+            <div class="section-header" style="border-color: var(--secondary);">
+                <h2>السلك الثانوي التأهيلي</h2>
+            </div>
+            <div class="cards-grid">
+                <a href="calc-tcs.html" class="portal-card card-tcs">
+                    <i class="fas fa-atom"></i>
+                    <h3>الجذع المشترك</h3>
+                    <p>حساب المعدل لجميع المسالك (علمي، أدبي، تقني)</p>
+                </a>
+
+                <a href="calc-1bac.html" class="portal-card card-secondary">
+                    <i class="fas fa-book-open"></i>
+                    <h3>الأولى باكالوريا</h3>
+                    <p>توقع معدل الامتحان الجهوي ونقاط المراقبة المستمرة</p>
+                </a>
+
+                <a href="calc-2bac.html" class="portal-card card-secondary">
+                    <i class="fas fa-medal"></i>
+                    <h3>الثانية باكالوريا</h3>
+                    <p>حساب المعدل العام وتوقع نتيجة الامتحان الوطني</p>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        تطوير: جواد الخياطي &copy; 2026 | مخصص لجميع المستويات الدراسية
+    </footer>
 
 </body>
 </html>
