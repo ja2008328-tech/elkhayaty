@@ -94,15 +94,21 @@
         .stat-box span { display: block; font-weight: 900; font-size: 1.4rem; }
         .stat-box p { font-size: 0.8rem; color: #94a3b8; margin-top: 5px; }
 
-        /* تعديل خاص لزر المعدل العام ليصبح قابلاً للضغط */
-        .stat-box.clickable {
+        /* --- تعديل زر المعدل (التقرير) ليصبح مخفياً وجميلاً --- */
+        .stat-box.report-btn {
             cursor: pointer;
-            border-color: var(--math);
-            text-decoration: none;
-            color: inherit;
+            border-bottom: 3px solid #a855f7; /* لون بنفسجي يتناسب مع صفحة التقرير */
+            background: linear-gradient(145deg, #1e293b, #2d3748);
+            position: relative;
+            overflow: hidden;
         }
-        .stat-box.clickable i { color: var(--math); }
-        .stat-box.clickable:hover { box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2); }
+        .stat-box.report-btn i { color: #a855f7; font-size: 1.8rem; margin-bottom: 10px; transition: 0.3s; }
+        .stat-box.report-btn:hover { 
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+            transform: scale(1.05);
+        }
+        .stat-box.report-btn:hover i { transform: rotate(15deg); }
+        .stat-box.report-btn span { font-size: 1.1rem; color: #f8fafc; }
 
         .titles-container {
             text-align: center;
@@ -125,7 +131,7 @@
         .phys-text { color: var(--phys); }
         .math-text { color: var(--math); }
 
-        /* --- حاوية الأزرار --- */
+        /* --- حاوية الأزرار السفلى --- */
         .action-cards-container {
             display: flex;
             flex-wrap: wrap; 
@@ -202,10 +208,10 @@
 
     <main class="main-content">
         <div class="dashboard-grid">
-            <div class="stat-box clickable" onclick="location.href='dashboard.html'">
-                <i class="fas fa-chart-line"></i>
-                <span id="displayAvg">--</span>
-                <p>المعدل العام (اضغط للتحليل)</p>
+            <div class="stat-box report-btn" onclick="location.href='dashboard.html'">
+                <i class="fas fa-chart-pie"></i>
+                <span>عرض التقرير</span>
+                <p>تحليل النتائج السنوية</p>
             </div>
 
             <div class="stat-box">
@@ -258,13 +264,6 @@
             document.getElementById('currentDayName').innerText = days[now.getDay()];
         }
         setInterval(updateClock, 1000); updateClock();
-
-        window.onload = function() {
-            // محاولة جلب المعدل من localStorage
-            // ملاحظة: تأكد أن الحاسبة تحفظ المعدل بهذا الاسم 'userAverage'
-            const savedAvg = localStorage.getItem('userAverage');
-            if(savedAvg) document.getElementById('displayAvg').innerText = savedAvg;
-        }
 
         function toggleSidebar() { document.querySelector('.sidebar').classList.toggle('active-sidebar'); }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }

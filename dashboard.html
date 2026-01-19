@@ -24,7 +24,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding-bottom: 50px; }
 
-        /* --- الشريط العلوي --- */
         nav { 
             background: var(--card); padding: 15px 5%; border-bottom: 2px solid var(--primary); 
             display: flex; justify-content: space-between; align-items: center; 
@@ -32,14 +31,11 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
         .nav-logo { font-weight: 900; color: var(--primary); font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
-        
-        /* زر العودة - تم إزالة تأثير الضوء (box-shadow) عند الـ hover */
         .nav-link { color: white; text-decoration: none; font-weight: 700; padding: 6px 20px; border: 1.5px solid var(--primary); border-radius: 10px; transition: 0.3s; }
-        .nav-link:hover { background: var(--primary); color: white; /* تم حذف الـ box-shadow المضيء هنا */ }
+        .nav-link:hover { background: var(--primary); color: white; }
 
         .container { max-width: 900px; margin: 30px auto; padding: 0 15px; }
 
-        /* --- بطاقات المعدلات العلوية --- */
         .yearly-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -57,7 +53,6 @@
         .s2 { border-color: var(--s2-color); }
         .total { border-color: var(--total-color); background: linear-gradient(145deg, #1e293b, #0f172a); }
 
-        /* --- مبيان المواد الكامل --- */
         .chart-card { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.05); }
         .bar-wrapper { margin-bottom: 22px; }
         .bar-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 700; font-size: 0.95rem; }
@@ -69,22 +64,13 @@
         .warn { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
         .danger { background: linear-gradient(90deg, #ef4444, #b91c1c); }
 
-        /* --- التلميح --- */
         .summary-box {
-            text-align: center; 
-            background: linear-gradient(145deg, #1e293b, #111827); 
-            border: 1px solid rgba(168, 85, 247, 0.3); 
-            padding: 30px; 
-            border-radius: 24px; 
-            margin-top: 40px;
-            position: relative;
-            overflow: hidden;
+            text-align: center; background: linear-gradient(145deg, #1e293b, #111827); 
+            border: 1px solid rgba(168, 85, 247, 0.3); padding: 30px; border-radius: 24px; 
+            margin-top: 40px; position: relative; overflow: hidden;
             box-shadow: 0 0 20px rgba(168, 85, 247, 0.1);
         }
-        .summary-box::before {
-            content: ""; position: absolute; top: 0; right: 0; width: 6px; height: 100%; background: var(--primary);
-        }
-        /* تم إضافة gap للمسافة بين أيقونة السحر والعنوان */
+        .summary-box::before { content: ""; position: absolute; top: 0; right: 0; width: 6px; height: 100%; background: var(--primary); }
         .summary-box h3 { color: var(--primary); margin-bottom: 15px; font-weight: 900; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; gap: 15px; }
         .summary-box p { font-size: 1.1rem; line-height: 1.8; color: #cbd5e1; }
 
@@ -130,25 +116,29 @@
 
     <script>
         window.onload = function() {
-            const savedAvg = localStorage.getItem('userAverage') || "--";
-            const savedData = localStorage.getItem('massar_detailed_v5');
+            // --- الربط المصحح مع كود "حساب عبر الدورات" ---
+            const yearlyData = JSON.parse(localStorage.getItem('massar_semesters_v2') || "{}");
             
-            document.getElementById('s1-val').innerText = savedAvg;
-            document.getElementById('total-val').innerText = savedAvg;
+            // الأسماء s1 و s2 و result هي التي يستخدمها الكود الذي أرسلته أنت
+            const s1 = yearlyData.s1 || "--"; 
+            const s2 = yearlyData.s2 || "--";
+            const total = yearlyData.result || "--";
 
-            if (!savedData) {
-                document.getElementById('materialsChart').innerHTML = "<p style='text-align:center; padding:30px;'>لا توجد بيانات محفوظة. يرجى ملء الحاسبة أولاً.</p>";
-                return;
-            }
+            document.getElementById('s1-val').innerText = s1;
+            document.getElementById('s2-val').innerText = s2;
+            document.getElementById('total-val').innerText = total;
 
-            const data = JSON.parse(savedData);
+            // --- الربط مع تفاصيل المواد (محاكي التنقيط أو حاسبة المواد) ---
+            const detailedData = JSON.parse(localStorage.getItem('massar_detailed_v5') || "{}");
+            const quickData = JSON.parse(localStorage.getItem('massar_subjects_v5') || "{}");
+            
             const subjects = [
                 {id: 0, name: "اللغة الفرنسية"}, {id: 1, name: "الرياضيات"},
                 {id: 2, name: "الفيزياء والكيمياء"}, {id: 3, name: "المعلوميات"},
                 {id: 4, name: "اللغة العربية"}, {id: 5, name: "اللغة الإنجليزية"},
                 {id: 6, name: "علوم الحياة والأرض"}, {id: 7, name: "الاجتماعيات"},
                 {id: 8, name: "التربية الإسلامية"}, {id: 9, name: "الفلسفة"},
-                {id: 10, name: "التربية البدنية"}
+                {id: 10, name: "التربية البدنية"}, {id: 11, name: "المواظبة والسلوك"}
             ];
 
             let html = "";
@@ -156,14 +146,20 @@
             let weak = [];
 
             subjects.forEach(sub => {
-                let f1 = parseFloat(data[`f1-${sub.id}`]) || 0;
-                let f2 = parseFloat(data[`f2-${sub.id}`]) || 0;
-                let act = parseFloat(data[`act-${sub.id}`]) || 0;
-                
                 let avg = 0;
-                if(f1 > 0 || f2 > 0) {
-                    let examAvg = (f2 > 0) ? (f1 + f2) / 2 : f1;
-                    avg = (sub.id === 1) ? examAvg : (examAvg * 0.75) + (act * 0.25);
+                if (detailedData[`f1-${sub.id}`] || detailedData[`act-${sub.id}`]) {
+                    let f1 = parseFloat(detailedData[`f1-${sub.id}`]) || 0;
+                    let f2 = parseFloat(detailedData[`f2-${sub.id}`]) || 0;
+                    let f3 = parseFloat(detailedData[`f3-${sub.id}`]) || 0;
+                    let f4 = parseFloat(detailedData[`f4-${sub.id}`]) || 0;
+                    let act = parseFloat(detailedData[`act-${sub.id}`]) || 0;
+                    let exams = [f1, f2, f3, f4].filter(v => v > 0);
+                    let examAvg = exams.length > 0 ? exams.reduce((a, b) => a + b) / exams.length : 0;
+                    if (sub.name === "الرياضيات") avg = examAvg;
+                    else if (sub.name === "المواظبة والسلوك") avg = act;
+                    else avg = (examAvg * 0.75) + (act * 0.25);
+                } else if (quickData[`grade-${sub.id}`]) {
+                    avg = parseFloat(quickData[`grade-${sub.id}`]);
                 }
 
                 if(avg > 0) {
@@ -171,7 +167,6 @@
                     if(avg >= 16) colorClass = "excel";
                     else if(avg >= 12) colorClass = "good";
                     else if(avg >= 10) colorClass = "warn";
-
                     if(avg >= 15) strong.push(sub.name);
                     if(avg < 10) weak.push(sub.name);
 
@@ -185,7 +180,7 @@
                 }
             });
 
-            document.getElementById('materialsChart').innerHTML = html || "<p style='text-align:center'>يرجى إدخال النقط في الحاسبة ليظهر التحليل.</p>";
+            document.getElementById('materialsChart').innerHTML = html || "<p style='text-align:center; padding:30px;'>يرجى إدخال النقط في إحدى الحاسبات ليظهر التحليل.</p>";
 
             if(html) {
                 document.getElementById('adviceSection').style.display = 'block';
@@ -193,7 +188,6 @@
                 if (strong.length > 0) msg += `مستواك في <b>${strong.join(' و ')}</b> يثير الإعجاب! أنت تملك قدرات عالية في هذه المواد. `;
                 if (weak.length > 0) msg += `<br><br>يجب الحذر من مادة <b>${weak.join(' و ')}</b>، حاول مراجعة نقاط الضعف فيها لرفع معدلك السنوي العام.`;
                 else msg += "<br>نتائجك متوازنة جداً، استمر في العمل بجد لتحقيق أفضل معدل سنوي ممكن.";
-                
                 document.getElementById('adviceText').innerHTML = msg;
             }
         }
