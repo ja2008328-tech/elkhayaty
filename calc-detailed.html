@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاكي تنقيط مسار | الجذع المشترك العلمي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --primary: #2ecc71; 
+            --bg: #0f172a; 
+            --card: #1e293b; 
+            --text: #f8fafc; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            padding-bottom: 50px;
+            line-height: 1.6;
+        }
+
+        /* الحاوية الموحدة 1100px لتناسق الشريط العلوي مع باقي الموقع */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; width: 100%; }
+
+        /* --- الشريط العلوي الموحد --- */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card);
+            padding: 15px 25px;
+            border-radius: 0 0 15px 15px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn-back {
+            text-decoration: none;
+            color: var(--text);
+            padding: 8px 24px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: var(--primary);
+            color: #0f172a;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-title {
+            color: var(--primary);
+            font-weight: 900;
+            font-size: 1.1rem;
+        }
+
+        /* --- الهيدر --- */
+        .pro-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .pro-header h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(to left, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .pro-hint {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            background: rgba(46, 204, 113, 0.05);
+            border-right: 4px solid var(--primary);
+            color: #94a3b8;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            text-align: justify;
+        }
+
+        /* --- الجدول المتجاوب --- */
+        .table-container { 
+            overflow-x: auto; 
+            background: var(--card); 
+            border-radius: 15px; 
+            padding: 10px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            /* ميزة سحب الجدول بسلاسة في الموبايل */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table { width: 100%; border-collapse: collapse; min-width: 850px; }
+        
+        th { 
+            background: rgba(46, 204, 113, 0.08); 
+            color: var(--primary); 
+            padding: 15px 10px; 
+            font-size: 0.85rem; 
+        }
+
+        td { padding: 12px 5px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center; }
+
+        input { 
+            width: 55px; 
+            padding: 8px; 
+            border-radius: 6px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            background: var(--bg); 
+            color: white; 
+            text-align: center; 
+            outline: none; 
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        /* منع الأسهم المزعجة في الأرقام */
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        input:disabled { 
+            background: rgba(15, 23, 42, 0.5); 
+            border-color: transparent; 
+            opacity: 0.3; 
+            cursor: not-allowed; 
+        }
+
+        input:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(46, 204, 113, 0.3); }
+        
+        .sub-avg-cell { 
+            font-weight: 900; 
+            color: var(--primary); 
+            background: rgba(46, 204, 113, 0.03); 
+            font-size: 1.1rem;
+        }
+
+        /* --- النتيجة النهائية --- */
+        .footer-avg { 
+            margin-top: 30px; 
+            background: linear-gradient(135deg, var(--primary), #27ae60); 
+            color: #0f172a; 
+            padding: 30px; 
+            border-radius: 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.2);
+        }
+
+        .grand-total-label { font-weight: 700; font-size: 1.1rem; display: block; }
+        #grandTotal { font-size: 3.5rem; font-weight: 900; line-height: 1; }
+
+        .footer-btns { display: flex; gap: 12px; }
+
+        .btn-footer { 
+            background: #0f172a; 
+            color: white; 
+            border: none; 
+            padding: 12px 28px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: 900; 
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-clear { background: #e74c3c; }
+        .btn-footer:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+        /* استجابة الهاتف */
+        @media (max-width: 768px) {
+            .top-nav { padding: 12px 15px; }
+            .footer-avg { flex-direction: column; text-align: center; gap: 25px; }
+            .pro-header h1 { font-size: 1.8rem; }
+            .footer-btns { flex-direction: column; width: 100%; }
+            .btn-footer { justify-content: center; width: 100%; }
+            #grandTotal { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="top-nav">
+        <a href="selection.html" class="btn-back"><i class="fas fa-arrow-right"></i> العودة</a>
+        <div class="nav-title">محاكي تنقيط مسار</div>
+    </nav>
+    
+    <header class="pro-header">
+        <h1>محاكي تنقيط مسار</h1>
+        <div class="pro-hint">
+            <i class="fas fa-info-circle" style="margin-left: 8px;"></i> 
+            يتم <strong>حفظ بياناتك تلقائياً</strong>. أدخل نقط الفروض والأنشطة للحصول على أدق معدل يحاكي منظومة مسار.
+        </div>
+    </header>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="text-align: right; min-width: 150px;">المادة</th>
+                    <th>فرض 1</th>
+                    <th>فرض 2</th>
+                    <th>فرض 3</th>
+                    <th>فرض 4</th>
+                    <th>أنشطة</th>
+                    <th>المعامل</th>
+                    <th class="sub-avg-cell">المعدل</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <div class="footer-avg">
+        <div>
+            <span class="grand-total-label">المعدل العام المتوقع:</span>
+            <span id="grandTotal">0.00</span>
+        </div>
+        <div class="footer-btns">
+            <button class="btn-footer btn-clear" onclick="clearAllData()">
+                <i class="fas fa-trash-alt"></i> تصفير
+            </button>
+            <button class="btn-footer" onclick="alert('يتم الحفظ تلقائياً عند إدخال البيانات!')">
+                <i class="fas fa-save"></i> حفظ النتيجة
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const massarConfig = [
+        { name: "اللغة الفرنسية", coef: 3, exams: 4, hasAct: true },
+        { name: "الرياضيات", coef: 4, exams: 3, hasAct: false },
+        { name: "الفيزياء والكيمياء", coef: 4, exams: 3, hasAct: true },
+        { name: "المعلوميات", coef: 2, exams: 4, hasAct: true },
+        { name: "اللغة العربية", coef: 2, exams: 2, hasAct: true },
+        { name: "اللغة الإنجليزية", coef: 3, exams: 2, hasAct: true },
+        { name: "علوم الحياة والأرض", coef: 4, exams: 2, hasAct: true },
+        { name: "الاجتماعيات", coef: 2, exams: 2, hasAct: true },
+        { name: "التربية الإسلامية", coef: 2, exams: 2, hasAct: true },
+        { name: "الفلسفة", coef: 2, exams: 2, hasAct: true },
+        { name: "التربية البدنية", coef: 2, exams: 3, hasAct: true },
+        { name: "المواظبة والسلوك", coef: 1, exams: 0, hasAct: true }
+    ];
+
+    function initTable() {
+        const body = document.getElementById('tableBody');
+        massarConfig.forEach((sub, i) => {
+            body.innerHTML += `
+                <tr>
+                    <td style="text-align: right; font-weight: 700; color: #e2e8f0;">${sub.name}</td>
+                    <td><input type="text" inputmode="decimal" id="f1-${i}" oninput="validateAndCalc(${i}, this)" ${sub.exams < 1 ? 'disabled' : ''} placeholder="-"></td>
+                    <td><input type="text" inputmode="decimal" id="f2-${i}" oninput="validateAndCalc(${i}, this)" ${sub.exams < 2 ? 'disabled' : ''} placeholder="-"></td>
+                    <td><input type="text" inputmode="decimal" id="f3-${i}" oninput="validateAndCalc(${i}, this)" ${sub.exams < 3 ? 'disabled' : ''} placeholder="-"></td>
+                    <td><input type="text" inputmode="decimal" id="f4-${i}" oninput="validateAndCalc(${i}, this)" ${sub.exams < 4 ? 'disabled' : ''} placeholder="-"></td>
+                    <td><input type="text" inputmode="decimal" id="act-${i}" oninput="validateAndCalc(${i}, this)" ${!sub.hasAct ? 'disabled' : ''} placeholder="-"></td>
+                    <td><input type="text" inputmode="decimal" id="coef-${i}" value="${sub.coef}" oninput="validateAndCalc(${i}, this); calcAll()"></td>
+                    <td class="sub-avg-cell" id="res-${i}">0.00</td>
+                </tr>
+            `;
+        });
+        loadSavedData();
+    }
+
+    function validateAndCalc(i, input) {
+        input.value = input.value.replace(/[^0-9.]/g, '');
+        if ((input.value.match(/\./g) || []).length > 1) {
+            input.value = input.value.replace(/\.+$/, "");
+        }
+        calcRow(i);
+    }
+
+    function calcRow(i) {
+        const sub = massarConfig[i];
+        let sumExams = 0, countExams = 0;
+
+        for(let j=1; j<=4; j++) {
+            let val = parseFloat(document.getElementById(`f${j}-${i}`).value);
+            if(!isNaN(val)) { sumExams += val; countExams++; }
+        }
+
+        let act = parseFloat(document.getElementById(`act-${i}`).value) || 0;
+        let examAvg = countExams > 0 ? (sumExams / countExams) : 0;
+        
+        let rowAvg = (sub.name === "الرياضيات") ? examAvg : 
+                     (sub.name === "المواظبة والسلوك") ? act : 
+                     (examAvg * 0.75) + (act * 0.25);
+
+        document.getElementById(`res-${i}`).innerText = rowAvg.toFixed(2);
+        saveCurrentProgress();
+        calcAll();
+    }
+
+    function calcAll() {
+        let totalP = 0, totalC = 0;
+        massarConfig.forEach((_, i) => {
+            let avg = parseFloat(document.getElementById(`res-${i}`).innerText) || 0;
+            let c = parseFloat(document.getElementById(`coef-${i}`).value) || 0;
+            totalP += (avg * c);
+            totalC += c;
+        });
+        document.getElementById('grandTotal').innerText = totalC > 0 ? (totalP / totalC).toFixed(2) : "0.00";
+    }
+
+    function saveCurrentProgress() {
+        const data = {};
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            if(input.id && input.value !== "") data[input.id] = input.value;
+        });
+        localStorage.setItem('massar_detailed_v5', JSON.stringify(data));
+    }
+
+    function loadSavedData() {
+        const saved = localStorage.getItem('massar_detailed_v5');
+        if (saved) {
+            const data = JSON.parse(saved);
+            for (const id in data) {
+                const el = document.getElementById(id);
+                if (el) el.value = data[id];
+            }
+            massarConfig.forEach((_, i) => calcRow(i));
+        }
+    }
+
+    function clearAllData() {
+        if (confirm("هل تريد مسح جميع البيانات؟")) {
+            localStorage.removeItem('massar_detailed_v5');
+            location.reload();
+        }
+    }
+
+    window.onload = initTable;
+</script>
+</body>
+</html>

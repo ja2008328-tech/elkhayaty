@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختر طريقة الحساب | منصة التميز</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --primary: #2ecc71; 
+            --bg: #0f172a; 
+            --card: #1e293b; 
+            --text: #f8fafc; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        /* الحاوية الموحدة 1100px لضمان تناسق طول الشريط العلوي */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; width: 100%; }
+
+        /* --- الشريط العلوي الموحد --- */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card);
+            padding: 15px 25px;
+            border-radius: 0 0 15px 15px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn-back {
+            text-decoration: none;
+            color: var(--text);
+            padding: 8px 24px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover { 
+            background: var(--primary); 
+            border-color: var(--primary); 
+            color: #0f172a; 
+            transform: translateY(-2px);
+        }
+
+        .nav-title {
+            color: var(--primary);
+            font-weight: 900;
+            font-size: 1.1rem;
+        }
+
+        /* --- الهيدر --- */
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 0 10px;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(to left, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .header-section p { 
+            color: #94a3b8; 
+            font-size: 1.05rem; 
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* --- شبكة الأزرار المتجاوبة --- */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .option-card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 45px 25px;
+            border-radius: 24px;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .icon-wrapper {
+            width: 80px; height: 80px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 20px;
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 25px;
+            transition: 0.3s;
+        }
+
+        .option-card i { font-size: 2.2rem; color: var(--primary); }
+
+        .option-card h3 { 
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            margin-bottom: 12px; 
+            color: #fff;
+        }
+
+        .option-card p { 
+            font-size: 0.95rem; 
+            color: #94a3b8; 
+            line-height: 1.6; 
+        }
+
+        /* تأثيرات التحريك */
+        .option-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(46, 204, 113, 0.15);
+        }
+
+        .option-card:hover .icon-wrapper {
+            background: var(--primary);
+            transform: rotate(-10deg) scale(1.1);
+        }
+
+        .option-card:hover i { color: #0f172a; }
+
+        /* تعديلات شاشات الموبايل */
+        @media (max-width: 768px) {
+            .header-section h1 { font-size: 1.8rem; }
+            .header-section p { font-size: 0.9rem; }
+            .options-grid { gap: 20px; }
+            .option-card { padding: 35px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="top-nav">
+        <a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i> الرئيسية</a>
+        <div class="nav-title">طرق الحساب</div>
+    </nav>
+    
+    <header class="header-section">
+        <h1>كيف تريد حساب معدلك؟</h1>
+        <p>اختر الطريقة التي تناسبك للبدء في محاكاة نتائجك وحفظها.</p>
+    </header>
+
+    <div class="options-grid">
+        
+        <a href="calc-semesters.html" class="option-card">
+            <div class="icon-wrapper"><i class="fas fa-columns"></i></div>
+            <h3>حساب عبر الدورات</h3>
+            <p>مثالي لمعرفة المعدل السنوي النهائي باستخدام معدل الدورة الأولى والثانية.</p>
+        </a>
+
+        <a href="calc-subjects.html" class="option-card">
+            <div class="icon-wrapper"><i class="fas fa-book"></i></div>
+            <h3>حساب عبر المواد</h3>
+            <p>أدخل معدل كل مادة على حدة مع إمكانية تعديل المعاملات الخاصة بك.</p>
+        </a>
+
+        <a href="calc-detailed.html" class="option-card">
+            <div class="icon-wrapper"><i class="fas fa-vial"></i></div>
+            <h3>حساب عبر الفروض</h3>
+            <p>أدخل نقط الفروض والأنشطة المدمجة لكل مادة للحصول على أدق نتيجة.</p>
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

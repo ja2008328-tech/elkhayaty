@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب عبر الدورات | جذع مشترك علمي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- ستايل موحد ومتوافق مع الحاسوب والهاتف --- */
+        :root { 
+            --primary: #2ecc71; 
+            --bg: #0f172a; 
+            --card: #1e293b; 
+            --text: #f8fafc; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+            padding-bottom: 50px;
+        }
+
+        /* العرض 1100px ليتناسق مع طول الشريط في الصفحات الأخرى */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; width: 100%; }
+
+        /* Navbar المطور */
+        .top-nav {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            background: var(--card); 
+            padding: 15px 25px; 
+            border-radius: 0 0 15px 15px;
+            margin-bottom: 40px; 
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn-back {
+            text-decoration: none; 
+            color: var(--text); 
+            padding: 8px 24px;
+            border: 1px solid rgba(255,255,255,0.2); 
+            border-radius: 8px; 
+            font-weight: 700; 
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover { 
+            background: var(--primary); 
+            color: #0f172a; 
+            border-color: var(--primary); 
+        }
+
+        .nav-title { 
+            color: var(--primary); 
+            font-weight: 900; 
+            font-size: 1.1rem;
+        }
+
+        /* العناوين */
+        .pro-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .pro-header h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(to left, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .pro-hint {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        /* شبكة البطاقات (تلقائية التوافق) */
+        .semesters-grid {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+            margin-bottom: 40px;
+        }
+
+        .semester-card {
+            background: var(--card); 
+            padding: 40px 30px; 
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05); 
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .semester-card:focus-within { 
+            border-color: var(--primary); 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 30px rgba(46, 204, 113, 0.1); 
+        }
+        
+        .semester-card label { 
+            display: block; 
+            font-size: 1.3rem; 
+            font-weight: 900; 
+            margin-bottom: 20px; 
+            color: var(--primary); 
+        }
+
+        /* خانة الإدخال الاحترافية */
+        .semester-card input {
+            width: 100%; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 2px solid rgba(255,255,255,0.1);
+            background: var(--bg); 
+            color: white; 
+            text-align: center; 
+            font-size: 2rem; 
+            font-weight: 900; 
+            outline: none; 
+            transition: 0.3s;
+        }
+
+        .semester-card input:focus { 
+            border-color: var(--primary); 
+            background: #161e2e;
+        }
+
+        /* النتيجة النهائية (Footer) */
+        .footer-avg { 
+            background: linear-gradient(135deg, var(--primary), #27ae60); 
+            color: #0f172a;
+            padding: 35px; 
+            border-radius: 20px; 
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.2); 
+            margin-top: auto;
+        }
+
+        .result-title { 
+            font-size: 1.2rem; 
+            font-weight: 700; 
+            margin-bottom: 10px; 
+            opacity: 0.9; 
+        }
+
+        #finalResult { 
+            font-size: 4rem; 
+            font-weight: 900; 
+            line-height: 1; 
+            margin-bottom: 20px;
+        }
+
+        .footer-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn-action {
+            background: #0f172a; 
+            color: white; 
+            border: none;
+            padding: 12px 30px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: 900;
+            display: inline-flex; 
+            align-items: center; 
+            gap: 10px; 
+            transition: 0.3s;
+        }
+
+        .btn-clear { background: #e74c3c; }
+        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+        /* تعديلات الهاتف */
+        @media (max-width: 768px) {
+            .nav-title { font-size: 1rem; }
+            .pro-header h1 { font-size: 1.8rem; }
+            #finalResult { font-size: 3rem; }
+            .footer-btns { flex-direction: column; width: 100%; }
+            .btn-action { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="top-nav">
+        <a href="selection.html" class="btn-back"><i class="fas fa-arrow-right"></i> العودة</a>
+        <div class="nav-title">معدلات الدورات</div>
+    </nav>
+
+    <header class="pro-header">
+        <h1>حساب عبر الدورات</h1>
+        <p class="pro-hint">يتم <strong>حفظ بياناتك تلقائياً</strong>. أدخل معدلاتك السنوية لمعرفة النتيجة النهائية.</p>
+    </header>
+
+    <div class="semesters-grid">
+        <div class="semester-card">
+            <label><i class="fas fa-graduation-cap"></i> الدورة الأولى</label>
+            <input type="text" inputmode="decimal" id="s1" placeholder="00.00" oninput="validateAndCalc(this)">
+        </div>
+        <div class="semester-card">
+            <label><i class="fas fa-award"></i> الدورة الثانية</label>
+            <input type="text" inputmode="decimal" id="s2" placeholder="00.00" oninput="validateAndCalc(this)">
+        </div>
+    </div>
+
+    <div class="footer-avg">
+        <div class="result-title">المعدل العام السنوي</div>
+        <div id="finalResult">0.00</div>
+        
+        <div class="footer-btns">
+            <button class="btn-action btn-clear" onclick="clearData()">
+                <i class="fas fa-trash-alt"></i> تصفير
+            </button>
+            <button class="btn-action" onclick="alert('يتم الحفظ تلقائياً عند الكتابة!')">
+                <i class="fas fa-check-circle"></i> حفظ النتيجة
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // الحساب والتحقق والحفظ التلقائي
+    function validateAndCalc(input) {
+        // منع الحروف والأسهم
+        input.value = input.value.replace(/[^0-9.]/g, '');
+        if ((input.value.match(/\./g) || []).length > 1) {
+            input.value = input.value.replace(/\.+$/, "");
+        }
+
+        calc();
+        saveData();
+    }
+
+    function calc() {
+        let s1 = parseFloat(document.getElementById('s1').value) || 0;
+        let s2 = parseFloat(document.getElementById('s2').value) || 0;
+        
+        // الحساب: (الدورة 1 + الدورة 2) مقسومة على 2
+        let avg = (s1 + s2) > 0 ? (s1 + s2) / 2 : 0;
+        
+        document.getElementById('finalResult').innerText = avg.toFixed(2);
+    }
+
+    function saveData() {
+        const data = {
+            s1: document.getElementById('s1').value,
+            s2: document.getElementById('s2').value,
+            result: document.getElementById('finalResult').innerText
+        };
+        localStorage.setItem('massar_semesters_v2', JSON.stringify(data));
+    }
+
+    function loadSavedData() {
+        const saved = localStorage.getItem('massar_semesters_v2');
+        if (saved) {
+            const data = JSON.parse(saved);
+            document.getElementById('s1').value = data.s1 || "";
+            document.getElementById('s2').value = data.s2 || "";
+            calc();
+        }
+    }
+
+    function clearData() {
+        if(confirm("هل تريد مسح المعدلات المسجلة؟")) {
+            localStorage.removeItem('massar_semesters_v2');
+            location.reload();
+        }
+    }
+
+    // تشغيل التحميل عند فتح الصفحة
+    window.onload = loadSavedData;
+</script>
+</body>
+</html>

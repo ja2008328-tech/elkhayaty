@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروض الفيزياء والكيمياء | الدورة الأولى</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --phys: #ff4757; 
+            --correct: #2ecc71; 
+            --bg: #0f172a; 
+            --card: #1e293b; 
+            --primary: #2ecc71; /* لون التناسق الأخضر للشريط */
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        
+        body { background-color: var(--bg); color: white; overflow-x: hidden; }
+
+        /* --- شريط التنقل الموحد (شكل البداية) --- */
+        nav { 
+            background: var(--card); 
+            padding: 15px 5%; 
+            border-bottom: 2px solid var(--primary); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .nav-logo { font-weight: 900; color: var(--phys); font-size: 1.1rem; }
+
+        .nav-link { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            padding: 5px 18px; 
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: 0.3s ease-in-out;
+        }
+
+        .nav-link:hover { border-color: var(--phys); color: var(--phys); }
+
+        .container { max-width: 950px; margin: 30px auto; padding: 0 15px; }
+        
+        .header-area { text-align: center; margin-bottom: 40px; }
+        .header-area h1 { font-weight: 900; font-size: 2rem; color: var(--phys); margin-bottom: 10px; }
+        .header-area p { color: #94a3b8; font-size: 0.95rem; }
+
+        .exam-section { margin-bottom: 40px; }
+        .section-title { 
+            display: inline-block; font-weight: 900; font-size: 1rem; color: var(--phys); 
+            background: rgba(255, 71, 87, 0.1); padding: 8px 20px; border-radius: 4px;
+            border-right: 4px solid var(--phys); margin-bottom: 20px;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+
+        .dual-card { 
+            display: flex; background: #1e293b; border-radius: 8px; 
+            overflow: hidden; border: 1px solid rgba(255,255,255,0.05); 
+            height: 55px; transition: 0.3s; 
+        }
+        .dual-card:hover { transform: translateY(-3px); border-color: var(--phys); }
+
+        .exam-btn { flex: 2.5; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+        .cor-btn { 
+            flex: 1.2; background: var(--correct); color: #0f172a; text-decoration: none; 
+            display: none; align-items: center; justify-content: center; 
+            font-weight: 900; font-size: 0.8rem; 
+        }
+
+        .has-correction .cor-btn { display: flex; }
+        .exam-btn:hover { background: rgba(255,255,255,0.03); }
+        .cor-btn:hover { background: #27ae60; }
+
+        footer { text-align: center; padding: 40px; color: #475569; font-size: 0.8rem; font-weight: 600; }
+
+        /* --- إضافات التوافق مع الهاتف --- */
+        @media (max-width: 600px) {
+            .header-area h1 { font-size: 1.6rem; }
+            .grid { grid-template-columns: 1fr; }
+            .dual-card { height: 100px; flex-direction: column; }
+            .exam-btn { border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; }
+            .cor-btn { flex: 1; width: 100%; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-logo">الفيزياء و الكيمياء</div>
+        <a href="subjects.html" class="nav-link">العودة</a>
+    </nav>
+
+    <div class="container">
+        <div class="header-area">
+            <h1>نماذج فروض الفيزياء والكيمياء</h1>
+            <p>الجذع المشترك العلمي - الدورة الأولى</p>
+        </div>
+
+        <div class="exam-section">
+            <div class="section-title">الفرض المحروس الأول</div>
+            <div class="grid">
+                <div class="dual-card">
+                    <a href="p_s1/c1/p_s1_c1.pdf" class="exam-btn" target="_blank">النموذج الأول</a>
+                </div>
+                <div class="dual-card">
+                    <a href="p_s1/c1/p_s1_c2.pdf" class="exam-btn" target="_blank">النموذج الثاني</a>
+                </div>
+                <div class="dual-card has-correction">
+                    <a href="p_s1/c1/p_s1_c3.pdf" class="exam-btn" target="_blank">النموذج الثالث</a>
+                    <a href="p_s1/c1/p_s1_c3_co.pdf" class="cor-btn" target="_blank">التصحيح</a>
+                </div>
+                <div class="dual-card">
+                    <a href="p_s1/c1/p_s1_c4.pdf" class="exam-btn" target="_blank">النموذج الرابع</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <div class="section-title">الفرض المحروس الثاني</div>
+            <div class="grid">
+                <div class="dual-card has-correction">
+                    <a href="p_s1/c2/p2_s1_c1.pdf" class="exam-btn" target="_blank">النموذج الأول</a>
+                    <a href="p_s1/c2/p2_s1_c1_co.pdf" class="cor-btn" target="_blank">التصحيح</a>
+                </div>
+                <div class="dual-card has-correction">
+                    <a href="p_s1/c2/p2_s1_c2.pdf" class="exam-btn" target="_blank">النموذج الثاني</a>
+                    <a href="p_s1/c2/p2_s1_c2_co.pdf" class="cor-btn" target="_blank">التصحيح</a>
+                </div>
+                <div class="dual-card">
+                    <a href="p_s1/c2/p2_s1_c3.pdf" class="exam-btn" target="_blank">النموذج الثالث</a>
+                </div>
+                <div class="dual-card">
+                    <a href="p_s1/c2/p2_s1_c4.pdf" class="exam-btn" target="_blank">النموذج الرابع</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="exam-section">
+            <div class="section-title">الفرض المحروس الثالث</div>
+            <div class="grid">
+                <div class="dual-card has-correction">
+                    <a href="p_s1/c3/p3_s1_c1.pdf" class="exam-btn" target="_blank">النموذج الأول</a>
+                    <a href="p_s1/c3/p3_s1_c1_co.pdf" class="cor-btn" target="_blank">التصحيح</a>
+                </div>
+                <div class="dual-card">
+                    <a href="p_s1/c3/p3_s1_c2.pdf" class="exam-btn" target="_blank">النموذج الثاني</a>
+                </div>
+                <div class="dual-card">
+                    <a href="p_s1/c3/p3_s1_c3.pdf" class="exam-btn" target="_blank">النموذج الثالث</a>
+                </div>
+                <div class="dual-card">
+                    <a href="p_s1/c3/p3_s1_c4.pdf" class="exam-btn" target="_blank">النموذج الرابع</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>جميع الحقوق محفوظة منصة العلوم 2026</footer>
+</body>
+</html>
