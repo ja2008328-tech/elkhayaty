@@ -94,6 +94,16 @@
         .stat-box span { display: block; font-weight: 900; font-size: 1.4rem; }
         .stat-box p { font-size: 0.8rem; color: #94a3b8; margin-top: 5px; }
 
+        /* تعديل خاص لزر المعدل العام ليصبح قابلاً للضغط */
+        .stat-box.clickable {
+            cursor: pointer;
+            border-color: var(--math);
+            text-decoration: none;
+            color: inherit;
+        }
+        .stat-box.clickable i { color: var(--math); }
+        .stat-box.clickable:hover { box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2); }
+
         .titles-container {
             text-align: center;
             margin-bottom: 50px;
@@ -192,11 +202,12 @@
 
     <main class="main-content">
         <div class="dashboard-grid">
-            <div class="stat-box">
+            <div class="stat-box clickable" onclick="location.href='dashboard.html'">
                 <i class="fas fa-chart-line"></i>
                 <span id="displayAvg">--</span>
-                <p>المعدل العام</p>
+                <p>المعدل العام (اضغط للتحليل)</p>
             </div>
+
             <div class="stat-box">
                 <i class="fas fa-clock"></i>
                 <span id="digitalClock">00:00</span>
@@ -249,6 +260,8 @@
         setInterval(updateClock, 1000); updateClock();
 
         window.onload = function() {
+            // محاولة جلب المعدل من localStorage
+            // ملاحظة: تأكد أن الحاسبة تحفظ المعدل بهذا الاسم 'userAverage'
             const savedAvg = localStorage.getItem('userAverage');
             if(savedAvg) document.getElementById('displayAvg').innerText = savedAvg;
         }
