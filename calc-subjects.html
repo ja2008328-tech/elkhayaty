@@ -2,222 +2,235 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
     <title>محاكي مسار | معدلات المواد</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* --- الأساسيات: لضمان التوافق مع كل الشاشات --- */
         :root { 
             --primary: #2ecc71; 
             --bg: #0f172a; 
-            --card: #1e293b; 
+            --card: rgba(30, 41, 59, 0.7); 
             --text: #f8fafc; 
+            --danger: #ff4757;
+            --warning: #ffa502;
+            color-scheme: dark;
         }
+
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* أنيميشن نبض خفيف للمعدل */
+        @keyframes pulseScale {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .page-transition { animation: fadeInPage 0.8s ease-out forwards; }
 
         * { 
             box-sizing: border-box; 
             margin: 0; 
             padding: 0; 
             font-family: 'Cairo', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-font-smoothing: antialiased;
         }
 
         body { 
             background-color: var(--bg); 
+            background-image: radial-gradient(circle at top right, rgba(46, 204, 113, 0.05), transparent);
             color: var(--text); 
-            padding-bottom: 50px; 
-            line-height: 1.6;
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-top: env(safe-area-inset-top);
+            line-height: 1.4;
+            min-height: 100vh;
         }
 
-        /* الحاوية: عريضة في الحاسوب (1100px) ومرنة في الهاتف */
         .container { 
-            max-width: 1100px; 
+            max-width: 900px; 
             margin: 0 auto; 
-            padding: 0 15px; 
+            padding: 0 8px; 
         }
 
-        /* --- الشريط العلوي: متناسق تماماً --- */
         .top-nav {
             display: flex; 
             justify-content: space-between; 
             align-items: center;
-            background: var(--card); 
-            padding: 15px 25px; 
+            background: rgba(15, 23, 42, 0.8); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 12px 15px; 
             border-radius: 0 0 15px 15px;
-            margin-bottom: 30px; 
+            margin-bottom: 15px; 
             border-bottom: 2px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
 
         .btn-back {
             text-decoration: none; 
             color: var(--text); 
-            padding: 8px 24px;
-            border: 1px solid rgba(255,255,255,0.2); 
-            border-radius: 8px; 
+            padding: 6px 14px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 10px; 
             font-weight: 700; 
-            font-size: 0.9rem;
-            transition: 0.3s ease;
+            font-size: 0.8rem; 
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255,255,255,0.03);
         }
 
-        .btn-back:hover { 
-            background: var(--primary); 
-            color: #0f172a; 
-            border-color: var(--primary); 
-        }
+        .btn-back:hover { background: var(--primary); color: #0f172a; transform: translateX(-3px); }
+        .btn-back:active { transform: scale(0.9); }
 
-        .nav-title { 
-            color: var(--primary); 
-            font-weight: 900; 
-            font-size: 1.1rem;
-        }
+        .nav-title { color: var(--primary); font-weight: 900; font-size: 0.9rem; letter-spacing: 0.5px; }
 
-        /* --- الهيدر --- */
-        .pro-header {
-            text-align: center;
-            margin-bottom: 35px;
-            padding: 0 10px;
-        }
-
+        .pro-header { text-align: center; margin-bottom: 20px; }
         .pro-header h1 {
-            font-size: 2.2rem;
+            font-size: clamp(1.6rem, 7vw, 2.5rem); 
             font-weight: 900;
-            background: linear-gradient(to left, #fff, var(--primary));
+            background: linear-gradient(135deg, #fff 30%, var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
+            animation: slideDown 0.8s ease-out;
         }
 
         .pro-hint {
-            max-width: 750px;
-            margin: 0 auto;
-            padding: 15px 20px;
-            background: rgba(46, 204, 113, 0.05);
+            margin-top: 5px;
+            padding: 8px 15px;
+            background: rgba(46, 204, 113, 0.08);
             border-right: 4px solid var(--primary);
             color: #94a3b8;
-            font-size: 0.9rem;
-            border-radius: 4px;
-            text-align: justify;
+            font-size: 0.75rem; 
+            border-radius: 6px;
         }
 
-        /* --- الجدول: يدعم السحب في الهاتف --- */
         .table-container { 
-            overflow-x: auto; 
             background: var(--card); 
-            border-radius: 15px; 
+            backdrop-filter: blur(10px);
+            border-radius: 18px; 
             padding: 10px; 
-            border: 1px solid rgba(255,255,255,0.05); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.08); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
 
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            min-width: 500px; /* يمنع الجدول من الانضغاط الزائد في الهاتف */
-        }
+        table { width: 100%; border-collapse: collapse; }
         
         th { 
-            background: rgba(46, 204, 113, 0.08); 
+            background: rgba(46, 204, 113, 0.12); 
             color: var(--primary); 
-            padding: 15px; 
-            font-size: 0.9rem; 
+            padding: 12px 5px; 
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
         }
 
-        td { 
-            padding: 12px 10px; 
-            border-bottom: 1px solid rgba(255,255,255,0.05); 
-            text-align: center; 
-        }
+        td { padding: 10px 2px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center; }
         
         .subject-name { 
             text-align: right; 
             font-weight: 700; 
-            color: #e2e8f0;
+            color: #f1f5f9;
+            font-size: 0.8rem;
+            padding-right: 8px;
         }
         
-        /* الخانات الموحدة: بدون أسهم، حفظ تلقائي، وتصميم نظيف */
         input {
-            width: 80px;
-            padding: 10px; 
-            border-radius: 8px; 
-            border: 1px solid rgba(255,255,255,0.1);
-            background: var(--bg); 
+            width: 52px; 
+            padding: 8px; 
+            border-radius: 10px; 
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(15, 23, 42, 0.6); 
             color: white; 
             text-align: center; 
             font-weight: 700; 
+            font-size: 0.9rem;
             outline: none; 
-            transition: 0.3s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        /* منع الأسهم في كل المتصفحات */
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
         input:focus { 
             border-color: var(--primary); 
-            box-shadow: 0 0 8px rgba(46, 204, 113, 0.3); 
-            background: #162033;
+            transform: scale(1.15); 
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);
+            background: var(--bg);
+            z-index: 10;
         }
+        
+        .coef-input { color: var(--primary); font-weight: 900; }
 
-        .coef-input { color: var(--primary); border-color: rgba(46, 204, 113, 0.1); }
-
-        /* --- الفوتر (النتيجة والأزرار) --- */
         .footer-avg { 
-            margin-top: 30px; 
-            background: linear-gradient(135deg, var(--primary), #27ae60); 
-            color: #0f172a; 
-            padding: 25px; 
-            border-radius: 15px; 
+            margin: 20px 0 30px 0; 
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(15px);
+            padding: 15px 20px; 
+            border-radius: 20px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.2);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        #grandTotal { font-size: 3rem; font-weight: 900; }
-        .total-label { font-weight: 700; font-size: 1.1rem; }
+        #grandTotal { 
+            font-size: 2.5rem; 
+            font-weight: 900; 
+            transition: color 0.5s ease;
+            display: block;
+        }
 
-        .footer-btns { display: flex; gap: 12px; }
+        /* ألوان مؤشرات الأداء */
+        .status-low { color: var(--danger) !important; }
+        .status-mid { color: var(--warning) !important; }
+        .status-high { color: var(--primary) !important; text-shadow: 0 0 10px rgba(46, 204, 113, 0.4); }
+
+        .total-label { font-weight: 900; font-size: 0.9rem; color: #94a3b8; }
+
+        .footer-btns { display: flex; gap: 10px; }
 
         .btn-footer { 
-            background: #0f172a; 
+            background: #1e293b; 
             color: white; 
-            border: none; 
-            padding: 12px 28px; 
-            border-radius: 10px; 
-            cursor: pointer; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            padding: 12px 18px; 
+            border-radius: 12px; 
             font-weight: 900; 
+            font-size: 0.8rem;
             display: flex; 
             align-items: center; 
-            gap: 10px;
-            transition: 0.3s ease;
+            gap: 8px;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .btn-clear { background: #e74c3c; }
-        .btn-footer:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .btn-footer:hover { transform: translateY(-4px); background: #334155; }
+        .btn-footer:active { transform: scale(0.9); }
+        .btn-clear { background: rgba(231, 76, 60, 0.1); color: #e74c3c; border-color: rgba(231, 76, 60, 0.2); }
+        .btn-clear:hover { background: #e74c3c; color: white; }
 
-        /* --- تعديلات الهاتف الذكي (Mobile Responsive) --- */
-        @media (max-width: 768px) {
-            .top-nav { padding: 12px 15px; }
-            .pro-header h1 { font-size: 1.7rem; }
-            .footer-avg { 
-                flex-direction: column; 
-                text-align: center; 
-                gap: 25px; 
-            }
-            .footer-btns { 
-                flex-direction: column; 
-                width: 100%; 
-            }
-            .btn-footer { 
-                justify-content: center; 
-                width: 100%; 
-            }
-            input { width: 70px; }
+        @media (min-width: 769px) {
+            input { width: 80px; }
+            .subject-name { font-size: 1rem; }
+            #grandTotal { font-size: 3.5rem; }
         }
     </style>
 </head>
-<body>
-
+<body class="page-transition"> 
 <div class="container">
     <nav class="top-nav">
         <a href="selection.html" class="btn-back"><i class="fas fa-arrow-right"></i> العودة</a>
@@ -227,8 +240,7 @@
     <header class="pro-header">
         <h1>معدلات المواد</h1>
         <div class="pro-hint">
-            <i class="fas fa-info-circle" style="margin-left: 8px;"></i> 
-            أدخل المعدل النهائي لكل مادة ومعاملها. يتم <strong>حفظ بياناتك تلقائياً</strong> لتعود إليها في أي وقت.
+            <i class="fas fa-magic"></i> أدخل النقاط واضغط <strong>Enter</strong> للتالي.
         </div>
     </header>
     
@@ -238,7 +250,7 @@
                 <tr>
                     <th style="text-align: right;">المادة</th>
                     <th>المعامل</th>
-                    <th>معدل المادة</th>
+                    <th>المعدل</th>
                 </tr>
             </thead>
             <tbody id="subjectsBody"></tbody>
@@ -252,17 +264,16 @@
         </div>
         <div class="footer-btns">
             <button class="btn-footer btn-clear" onclick="clearData()">
-                <i class="fas fa-trash-alt"></i> تصفير
+                <i class="fas fa-trash-alt"></i> <span>مسح</span>
             </button>
-            <button class="btn-footer" onclick="alert('تم الحفظ التلقائي بنجاح!')">
-                <i class="fas fa-save"></i> حفظ النتيجة
+            <button class="btn-footer" onclick="saveVisualFeedback(this)">
+                <i class="fas fa-check-circle"></i> <span>حفظ</span>
             </button>
         </div>
     </div>
 </div>
 
 <script>
-    // قائمة المواد
     const subjects = [
         { name: "الرياضيات", coef: 4 },
         { name: "الفيزياء والكيمياء", coef: 4 },
@@ -278,26 +289,30 @@
         { name: "المواظبة والسلوك", coef: 1 }
     ];
 
-    // بناء الجدول عند تحميل الصفحة
     function initTable() {
         const body = document.getElementById('subjectsBody');
         subjects.forEach((sub, index) => {
             body.innerHTML += `
                 <tr>
                     <td class="subject-name">${sub.name}</td>
-                    <td>
-                        <input type="text" inputmode="decimal" id="coef-${index}" class="coef-input" value="${sub.coef}" oninput="validateAndCalc(this)">
-                    </td>
-                    <td>
-                        <input type="text" inputmode="decimal" id="grade-${index}" class="grade-input" placeholder="-" oninput="validateAndCalc(this)">
-                    </td>
+                    <td><input type="text" inputmode="decimal" id="coef-${index}" class="coef-input" value="${sub.coef}" oninput="validateAndCalc(this)" onkeydown="handleEnter(event, ${index}, 'coef')"></td>
+                    <td><input type="text" inputmode="decimal" id="grade-${index}" class="grade-input" placeholder="-" oninput="validateAndCalc(this)" onkeydown="handleEnter(event, ${index}, 'grade')"></td>
                 </tr>
             `;
         });
         loadSavedData();
     }
 
-    // التحقق من المدخلات (أرقام فقط) والحساب التلقائي
+    // تحسين UX: الانتقال التلقائي بين الخانات
+    function handleEnter(e, index, type) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            let nextId = type === 'coef' ? `grade-${index}` : `coef-${index + 1}`;
+            let nextInput = document.getElementById(nextId);
+            if (nextInput) nextInput.focus();
+        }
+    }
+
     function validateAndCalc(input) {
         input.value = input.value.replace(/[^0-9.]/g, '');
         if ((input.value.match(/\./g) || []).length > 1) {
@@ -307,15 +322,11 @@
         saveCurrentProgress();
     }
 
-    // حساب المعدل العام
     function calcAll() {
-        let totalPoints = 0;
-        let totalCoef = 0;
-
+        let totalPoints = 0, totalCoef = 0;
         subjects.forEach((sub, index) => {
             let grade = parseFloat(document.getElementById(`grade-${index}`).value);
             let coef = parseFloat(document.getElementById(`coef-${index}`).value) || 0;
-
             if (!isNaN(grade)) {
                 totalPoints += (grade * coef);
                 totalCoef += coef;
@@ -323,12 +334,33 @@
                 totalCoef += coef; 
             }
         });
-
+        
         let final = totalCoef > 0 ? (totalPoints / totalCoef).toFixed(2) : "0.00";
-        document.getElementById('grandTotal').innerText = final;
+        const display = document.getElementById('grandTotal');
+        display.innerText = final;
+
+        // تحديث لون مؤشر الأداء
+        display.classList.remove('status-low', 'status-mid', 'status-high');
+        let numFinal = parseFloat(final);
+        if (numFinal > 0 && numFinal < 10) display.classList.add('status-low');
+        else if (numFinal >= 10 && numFinal < 15) display.classList.add('status-mid');
+        else if (numFinal >= 15) display.classList.add('status-high');
     }
 
-    // حفظ البيانات في ذاكرة المتصفح
+    function saveVisualFeedback(btn) {
+        const icon = btn.querySelector('i');
+        const originalClass = icon.className;
+        icon.className = "fas fa-spinner fa-spin";
+        setTimeout(() => {
+            icon.className = "fas fa-check-double";
+            btn.style.borderColor = "var(--primary)";
+            setTimeout(() => {
+                icon.className = originalClass;
+                btn.style.borderColor = "rgba(255,255,255,0.1)";
+            }, 1500);
+        }, 500);
+    }
+
     function saveCurrentProgress() {
         const data = {};
         subjects.forEach((_, index) => {
@@ -338,7 +370,6 @@
         localStorage.setItem('massar_subjects_v5', JSON.stringify(data));
     }
 
-    // تحميل البيانات المحفوظة
     function loadSavedData() {
         const saved = localStorage.getItem('massar_subjects_v5');
         if (saved) {
@@ -351,9 +382,8 @@
         }
     }
 
-    // تصفير الجدول
     function clearData() {
-        if(confirm("هل أنت متأكد من مسح جميع البيانات؟")) {
+        if(confirm("هل تريد تصفير جميع النقاط؟")) {
             localStorage.removeItem('massar_subjects_v5');
             location.reload();
         }

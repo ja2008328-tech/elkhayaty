@@ -2,12 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>منصة التميز | جذع مشترك علمي</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Montserrat:wght@900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -19,23 +19,83 @@
             --sidebar-bg: #1e293b;
             --text: #f8fafc;
             --card: #1e293b;
+            --morocco-red: #c1272d;
+            --morocco-green: #006233;
+            color-scheme: dark;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        /* --- لمسات احترافية بسيطة --- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent; 
+            /* منع تحديد النص في العناصر التفاعلية */
+            user-select: none;
+            -webkit-user-select: none;
+            /* تنعيم الخطوط */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* تحسين شكل شريط التمرير */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         body {
             background-color: var(--bg);
             color: var(--text);
             display: flex;
             min-height: 100vh;
-            overflow-x: hidden;
+            animation: fadeInPage 0.8s ease-out;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        .logo-morocco, .fancy-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(to bottom, var(--morocco-red) 40%, var(--morocco-green) 60%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .logo-morocco { font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 40px; }
+        .fancy-title { font-size: 2.2rem; margin-bottom: 20px; font-family: 'Cairo', sans-serif; }
+        
+        .logo-morocco::after, .fancy-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            margin: 5px auto;
+            border-radius: 2px;
         }
 
         /* --- القائمة الجانبية --- */
         .sidebar {
             width: 260px;
             background-color: var(--sidebar-bg);
-            border-left: 2px solid var(--primary);
+            box-shadow: 5px 0 20px rgba(46, 204, 113, 0.15); 
+            border-left: 1px solid rgba(46, 204, 113, 0.3);
             padding: 40px 20px;
             height: 100vh;
             position: fixed;
@@ -45,22 +105,42 @@
             overflow-y: auto;
         }
 
-        .logo { font-size: 1.4rem; font-weight: 900; color: var(--primary); margin-bottom: 40px; text-align: center; }
-
         .menu-link {
-            display: block; color: #94a3b8; text-decoration: none; padding: 12px 15px;
-            border-radius: 8px; margin-bottom: 10px; font-weight: 700; transition: 0.3s; cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            transition: 0.3s;
+            cursor: pointer;
+            min-height: 45px; 
+        }
+
+        .menu-link i {
+            margin-left: 12px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
         }
 
         .menu-link:hover, .menu-link.active {
-            background: rgba(46, 204, 113, 0.15); color: var(--primary); transform: translateX(-5px);
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--primary);
+            transform: translateX(-5px);
         }
 
-        /* --- المحتوى الرئيسي --- */
+        /* إضافة تأثير الضغط الصغير */
+        .menu-link:active, .stat-box:active, .action-card:active {
+            transform: scale(0.96);
+        }
+
         .main-content {
             flex: 1;
             margin-right: 260px; 
-            padding: 40px;
+            padding: clamp(20px, 5vw, 40px);
             display: flex; 
             flex-direction: column; 
             align-items: center;
@@ -68,11 +148,9 @@
             transition: 0.3s;
         }
 
-        /* --- شبكة الإحصائيات --- */
         .dashboard-grid {
-            display: flex;
-            flex-wrap: wrap; 
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 20px;
             width: 100%;
             max-width: 1000px;
@@ -85,53 +163,42 @@
             border-radius: 15px;
             text-align: center;
             border-bottom: 3px solid var(--primary);
-            flex: 1 1 200px; 
-            min-width: 180px; 
-            transition: 0.3s;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
         }
         
-        .stat-box:hover { transform: translateY(-3px); }
+        .stat-box:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .stat-box span { display: block; font-weight: 900; font-size: 1.4rem; }
         .stat-box p { font-size: 0.8rem; color: #94a3b8; margin-top: 5px; }
 
-        /* --- تعديل زر المعدل (التقرير) ليصبح مخفياً وجميلاً --- */
         .stat-box.report-btn {
-            cursor: pointer;
-            border-bottom: 3px solid #a855f7; /* لون بنفسجي يتناسب مع صفحة التقرير */
+            border-bottom: 3px solid #a855f7;
             background: linear-gradient(145deg, #1e293b, #2d3748);
-            position: relative;
-            overflow: hidden;
         }
-        .stat-box.report-btn i { color: #a855f7; font-size: 1.8rem; margin-bottom: 10px; transition: 0.3s; }
-        .stat-box.report-btn:hover { 
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
-            transform: scale(1.05);
+        .stat-box.report-btn i { color: #a855f7; font-size: 1.8rem; margin-bottom: 10px; }
+
+        .stat-box.goal-box { 
+            border-bottom: 3px solid #f1c40f; 
+            background: linear-gradient(145deg, #1e293b, #2c2d30);
         }
-        .stat-box.report-btn:hover i { transform: rotate(15deg); }
-        .stat-box.report-btn span { font-size: 1.1rem; color: #f8fafc; }
+        .stat-box.goal-box i { color: #f1c40f; font-size: 1.8rem; margin-bottom: 10px; }
 
         .titles-container {
             text-align: center;
             margin-bottom: 50px;
-            margin-top: 10px;
         }
 
         .main-title { 
-            font-size: clamp(2rem, 5vw, 3.5rem); 
+            font-size: clamp(1.8rem, 8vw, 3.5rem); 
             font-weight: 900; 
             line-height: 1.2;
             margin-bottom: 10px;
         }
         
-        .sub-title {
-            font-size: clamp(1.2rem, 3vw, 2rem);
-            font-weight: 700;
-        }
-
+        .sub-title { font-size: clamp(1rem, 5vw, 2rem); font-weight: 700; }
         .phys-text { color: var(--phys); }
         .math-text { color: var(--math); }
 
-        /* --- حاوية الأزرار السفلى --- */
         .action-cards-container {
             display: flex;
             flex-wrap: wrap; 
@@ -152,8 +219,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            transition: 0.3s ease;
-            position: relative;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             flex: 1 1 300px; 
             max-width: 400px;
         }
@@ -165,33 +231,75 @@
         .action-card:hover {
             transform: translateY(-8px);
             border-color: var(--primary);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 30px rgba(46, 204, 113, 0.1);
         }
 
-        .card-phys:hover { border-color: var(--phys); }
-        .card-phys i { color: var(--phys); }
-
-        .menu-toggle { display: none; position: fixed; top: 20px; right: 20px; z-index: 1100; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 5px; font-size: 1.2rem;}
+        .menu-toggle { 
+            display: none; 
+            position: fixed; 
+            top: 20px; right: 20px; 
+            z-index: 1100; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 10px; 
+            border-radius: 5px; 
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
 
         @media (max-width: 900px) {
             .sidebar { right: -260px; }
             .sidebar.active-sidebar { right: 0; }
-            .main-content { margin-right: 0; width: 100%; padding: 80px 20px; }
+            .main-content { margin-right: 0; width: 100%; padding: 70px 15px; }
             .menu-toggle { display: block; }
+
+            .dashboard-grid {
+                grid-template-columns: repeat(3, 1fr); 
+                gap: 8px;
+            }
+            .stat-box { padding: 12px 5px; border-radius: 12px; }
+            .stat-box i { font-size: 1.3rem !important; margin-bottom: 5px !important; }
+            .stat-box span { font-size: 0.85rem; }
+            .stat-box p { font-size: 0.6rem; }
+
+            .action-card { flex: 1 1 45%; padding: 20px 10px; }
+            .action-card i { font-size: 1.8rem; }
+            .action-card h3 { font-size: 0.95rem; }
+            .action-card p { display: none; } 
         }
 
         .info-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.95); display: none;
+            background: rgba(15, 23, 42, 0.97); display: none;
             justify-content: center; align-items: center; z-index: 2000;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
         .info-card {
-            background: #1e293b; padding: 40px; border-radius: 16px;
-            max-width: 400px; width: 90%; position: relative;
-            border: 2px solid var(--primary); text-align: center; color: white;
+            background: #1e293b; padding: 40px; border-radius: 25px;
+            max-width: 480px; width: 90%; position: relative;
+            border: 1px solid rgba(46, 204, 113, 0.3); text-align: center; color: white;
+            animation: fadeInPage 0.4s ease-out;
         }
         .close-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; }
+        
+        .holiday-list { text-align: right; margin-top: 15px; font-size: 0.9rem; border-collapse: collapse; width: 100%; }
+        .holiday-list td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .h-date { color: var(--primary); font-weight: bold; }
+
+        @keyframes floatIcon {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .contact-link {
+            display: inline-flex; flex-direction: column; align-items: center;
+            text-decoration: none; color: white; margin: 0 20px;
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+        .contact-link i { font-size: 3rem; margin-bottom: 10px; }
+        .mail-color { color: #ff4757; }
+        .phone-color { color: #2ecc71; animation-delay: 1.5s; }
     </style>
 </head>
 <body id="bodyTag">
@@ -199,30 +307,43 @@
     <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 
     <aside class="sidebar">
-        <div class="logo">جذع مشترك علمي</div>
-        <div class="menu-link active" onclick="location.reload()">الرئيسية</div>
-        <div class="menu-link" onclick="openModal('about-modal')">لمحة عن التطبيق</div>
-        <div class="menu-link" onclick="openModal('dev-modal')">المطور</div>
-        <div class="menu-link" onclick="openModal('contact-modal')">تواصل معي</div>
+        <div class="logo-morocco">MOROCCO</div>
+        
+        <div class="menu-link active" onclick="location.reload()">
+            <i class="fas fa-home"></i> الرئيسية
+        </div>
+        <div class="menu-link" onclick="openModal('holiday-modal')">
+            <i class="fas fa-calendar-alt"></i> لائحة العطل
+        </div>
+        <div class="menu-link" onclick="openModal('about-modal')">
+            <i class="fas fa-info-circle"></i> لمحة عن التطبيق
+        </div>
+        <div class="menu-link" onclick="openModal('dev-modal')">
+            <i class="fas fa-user-tie"></i> المطور
+        </div>
+        <div class="menu-link" onclick="openModal('contact-modal')">
+            <i class="fas fa-comment-dots"></i> تواصل معي
+        </div>
     </aside>
 
     <main class="main-content">
         <div class="dashboard-grid">
             <div class="stat-box report-btn" onclick="location.href='dashboard.html'">
                 <i class="fas fa-chart-pie"></i>
-                <span>عرض التقرير</span>
-                <p>تحليل النتائج السنوية</p>
+                <span>التقرير</span>
+                <p>تحليل النتائج</p>
+            </div>
+
+            <div class="stat-box goal-box" onclick="location.href='goal-details.html'">
+                <i class="fas fa-bullseye"></i>
+                <span id="targetDisplay">--</span>
+                <p>هدفي</p>
             </div>
 
             <div class="stat-box">
-                <i class="fas fa-clock"></i>
+                <i class="fas fa-clock" style="color: var(--primary); font-size: 1.8rem; margin-bottom: 10px;"></i> 
                 <span id="digitalClock">00:00</span>
                 <p id="currentDayName">--</p>
-            </div>
-            <div class="stat-box">
-                <i class="fas fa-graduation-cap"></i>
-                <span>TCSF</span>
-                <p>المسلك العلمي</p>
             </div>
         </div>
 
@@ -231,10 +352,11 @@
             <h2 class="sub-title">
                 <span class="phys-text">الفيزياء والكيمياء</span> و <span class="math-text">الرياضيات</span>
             </h2>
+            <p style="color: #94a3b8; font-weight: bold; margin-top: 5px;">(مخصص للمنظومة التعليمية بالمغرب 🇲🇦)</p>
         </div>
         
         <div class="action-cards-container">
-            <a href="subjects.html" class="action-card card-phys">
+            <a href="subjects.html" class="action-card">
                 <i class="fas fa-file-pdf"></i>
                 <h3>تصفح الفروض</h3>
                 <p>نماذج الفروض ونماذج مصححة</p>
@@ -252,9 +374,54 @@
         </footer>
     </main>
 
-    <div id="about-modal" class="info-overlay"><div class="info-card"><button class="close-btn" onclick="closeModal('about-modal')">×</button><h2>حول المنصة</h2><p>تطبيق شامل لمساعدة تلاميذ الجذع المشترك العلمي.</p></div></div>
-    <div id="dev-modal" class="info-overlay"><div class="info-card"><button class="close-btn" onclick="closeModal('dev-modal')">×</button><h2>المطور</h2><p>جواد الخياطي.</p></div></div>
-    <div id="contact-modal" class="info-overlay"><div class="info-card"><button class="close-btn" onclick="closeModal('contact-modal')">×</button><h2>تواصل</h2><p>واتساب: 212624507606</p></div></div>
+    <div id="holiday-modal" class="info-overlay">
+        <div class="info-card">
+            <button class="close-btn" onclick="closeModal('holiday-modal')">×</button>
+            <h2 style="color: var(--primary); margin-bottom: 20px;"><i class="fas fa-calendar-alt"></i> جدول العطل 2026</h2>
+            <table class="holiday-list">
+                <tr><td>عطلة رأس السنة الميلادية</td><td class="h-date">1 يناير</td></tr>
+                <tr><td>ذكرى تقديم وثيقة الاستقلال</td><td class="h-date">11 يناير</td></tr>
+                <tr><td>رأس السنة الأمازيغية</td><td class="h-date">14 يناير</td></tr>
+                <tr><td>عطلة منتصف السنة الدراسية</td><td class="h-date">يناير (8 أيام)</td></tr>
+                <tr><td>عيد الشغل</td><td class="h-date">1 ماي</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="about-modal" class="info-overlay">
+        <div class="info-card">
+            <button class="close-btn" onclick="closeModal('about-modal')">×</button>
+            <h2 class="fancy-title">رؤية المنصة</h2>
+            <p style="line-height: 1.8; color: #cbd5e1; text-align: justify; font-size: 0.95rem;">
+                تم تصميم هذه المنصة لتكون الشريك الاستراتيجي لكل تلميذ في مسار الجذع المشترك العلمي.
+            </p>
+        </div>
+    </div>
+
+    <div id="dev-modal" class="info-overlay">
+        <div class="info-card">
+            <button class="close-btn" onclick="closeModal('dev-modal')">×</button>
+            <h2 class="fancy-title">JAWAD EL KHAYATI</h2>
+            <p style="font-weight: 900; margin: 10px 0; color: var(--primary); letter-spacing: 1px;">Developer & UI/UX Designer</p>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="info-overlay">
+        <div class="info-card">
+            <button class="close-btn" onclick="closeModal('contact-modal')">×</button>
+            <h2 class="fancy-title">تواصل مباشر</h2>
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <a href="mailto:ja2008328@gmail.com" class="contact-link">
+                    <i class="fas fa-envelope-open-text mail-color"></i>
+                    <span>الإيميل</span>
+                </a>
+                <a href="https://wa.me/212624507606" class="contact-link">
+                    <i class="fab fa-whatsapp phone-color"></i>
+                    <span>واتساب</span>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <script>
         function updateClock() {
@@ -265,9 +432,18 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
+        window.onload = function() {
+            const savedGoal = localStorage.getItem('user_target_grade');
+            if (savedGoal) document.getElementById('targetDisplay').innerText = savedGoal;
+        }
+
         function toggleSidebar() { document.querySelector('.sidebar').classList.toggle('active-sidebar'); }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
+        window.onclick = function(event) {
+            if (event.target.className === 'info-overlay') event.target.style.display = 'none';
+        }
     </script>
 </body>
 </html>

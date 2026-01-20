@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>اختر طريقة الحساب | منصة التميز</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,9 +12,31 @@
             --bg: #0f172a; 
             --card: #1e293b; 
             --text: #f8fafc; 
+            color-scheme: dark; 
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        /* --- أنيميشن التنقل (كما هي بدون تغيير) --- */
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-transition {
+            animation: fadeInPage 0.8s ease-out forwards;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Cairo', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+            /* الإضافات الاحترافية الجديدة */
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-font-smoothing: antialiased;
+        }
 
         body { 
             background-color: var(--bg); 
@@ -23,22 +45,30 @@
             display: flex;
             flex-direction: column;
             line-height: 1.6;
+            overflow-x: hidden;
+            /* دعم الهواتف الحديثة */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* الحاوية الموحدة 1100px لضمان تناسق طول الشريط العلوي */
         .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; width: 100%; }
 
-        /* --- الشريط العلوي الموحد --- */
+        /* --- الشريط العلوي --- */
         .top-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--card);
+            background: rgba(30, 41, 59, 0.8); /* تم تحسين الشفافية */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 15px 25px;
             border-radius: 0 0 15px 15px;
             margin-bottom: 40px;
             border-bottom: 2px solid var(--primary);
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .btn-back {
@@ -62,6 +92,9 @@
             transform: translateY(-2px);
         }
 
+        /* إضافة تأثير الضغط الاحترافي */
+        .btn-back:active { transform: scale(0.95); }
+
         .nav-title {
             color: var(--primary);
             font-weight: 900;
@@ -76,7 +109,7 @@
         }
 
         .header-section h1 {
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 8vw, 2.5rem); /* خط مرن احترافي */
             font-weight: 900;
             background: linear-gradient(to left, #fff, var(--primary));
             -webkit-background-clip: text;
@@ -91,7 +124,7 @@
             margin: 0 auto;
         }
 
-        /* --- شبكة الأزرار المتجاوبة --- */
+        /* --- شبكة الأزرار --- */
         .options-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -139,12 +172,14 @@
             line-height: 1.6; 
         }
 
-        /* تأثيرات التحريك */
         .option-card:hover {
             transform: translateY(-12px);
             border-color: var(--primary);
             box-shadow: 0 20px 40px rgba(46, 204, 113, 0.15);
         }
+
+        /* إضافة تأثير الضغط للبطاقات */
+        .option-card:active { transform: scale(0.96); }
 
         .option-card:hover .icon-wrapper {
             background: var(--primary);
@@ -153,17 +188,39 @@
 
         .option-card:hover i { color: #0f172a; }
 
-        /* تعديلات شاشات الموبايل */
+        /* --- تعديلات الهاتف المحدثة --- */
         @media (max-width: 768px) {
+            .header-section { margin-bottom: 30px; }
             .header-section h1 { font-size: 1.8rem; }
             .header-section p { font-size: 0.9rem; }
-            .options-grid { gap: 20px; }
-            .option-card { padding: 35px 20px; }
+            
+            .options-grid { 
+                grid-template-columns: 1fr; 
+                gap: 15px; 
+                max-width: 380px; 
+                margin: 0 auto 40px auto;
+            }
+
+            .option-card { 
+                padding: 25px 20px; 
+                border-radius: 20px;
+            }
+
+            .icon-wrapper { 
+                width: 65px; height: 65px; 
+                margin-bottom: 15px; 
+            }
+
+            .option-card i { font-size: 1.8rem; }
+            .option-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+            .option-card p { font-size: 0.8rem; line-height: 1.4; }
+            
+            .top-nav { padding: 12px 15px; }
+            .btn-back { padding: 8px 16px; font-size: 0.8rem; }
         }
     </style>
 </head>
-<body>
-
+<body class="page-transition"> 
 <div class="container">
     <nav class="top-nav">
         <a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i> الرئيسية</a>

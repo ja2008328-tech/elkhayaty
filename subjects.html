@@ -16,27 +16,36 @@
             --title: #2ecc71; 
         }
         
+        /* --- أنيميشن التنقل (Page Transition) --- */
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-transition {
+            animation: fadeInPage 0.8s ease-out forwards;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--bg); color: white; overflow-x: hidden; }
 
-        /* --- شريط التنقل المعدل ليشبه البداية في الشكل فقط --- */
+        /* --- شريط التنقل --- */
         nav { 
-            background: var(--card); /* لون الخلفية من صفحة البداية */
+            background: var(--card); 
             padding: 15px 5%; 
-            border-bottom: 2px solid var(--title); /* الخط الأخضر السفلي للتناسق */
+            border-bottom: 2px solid var(--title); 
             display: flex; 
             justify-content: space-between; 
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* الظل الاحترافي */
-            border-radius: 0 0 15px 15px; /* الانحناء السفلي */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-radius: 0 0 15px 15px;
         }
         
         .nav-logo { font-weight: 900; color: var(--title); font-size: 1.1rem; }
 
-        /* زر العودة والأنيميشن الخاص به كما هو */
         .nav-link { 
             color: white; 
             text-decoration: none; 
@@ -100,8 +109,7 @@
         }
     </style>
 </head>
-<body>
-    <nav>
+<body class="page-transition"> <nav>
         <div class="nav-logo">الجذع المشترك العلمي</div>
         <a href="index.html" class="nav-link">العودة</a>
     </nav>

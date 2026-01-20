@@ -13,12 +13,23 @@
             --correct: #2ecc71; 
             --bg: #0f172a; 
             --card: #1e293b; 
-            --primary: #2ecc71; /* اللون الأخضر للتناسق */
+            --primary: #2ecc71; 
         }
+
+        /* --- أنيميشن التنقل (Page Transition) --- */
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-transition {
+            animation: fadeInPage 0.8s ease-out forwards;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--bg); color: white; overflow-x: hidden; }
 
-        /* --- تعديل الشريط العلوي ليطابق شكل البداية --- */
+        /* --- الشريط العلوي --- */
         nav { 
             background: var(--card); 
             padding: 15px 5%; 
@@ -90,8 +101,7 @@
         }
     </style>
 </head>
-<body>
-    <nav>
+<body class="page-transition"> <nav>
         <div class="nav-logo">الرياضيات TCSF</div>
         <a href="subjects.html" class="nav-link">العودة</a>
     </nav>

@@ -21,6 +21,17 @@
             --text: #f8fafc;
         }
 
+        /* --- أنيميشن التنقل (Page Transition) --- */
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* تطبيق الأنيميشن على حاوية الصفحة */
+        .page-transition {
+            animation: fadeInPage 0.8s ease-out forwards;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding-bottom: 50px; }
 
@@ -77,9 +88,7 @@
         footer { text-align: center; padding: 40px; color: #475569; font-size: 0.8rem; font-weight: 700; }
     </style>
 </head>
-<body>
-
-    <nav>
+<body class="page-transition"> <nav>
         <div class="nav-logo"><i class="fas fa-chart-line"></i> تقرير النجاح</div>
         <a href="index.html" class="nav-link">العودة للرئيسية</a>
     </nav>
@@ -116,10 +125,8 @@
 
     <script>
         window.onload = function() {
-            // --- الربط المصحح مع كود "حساب عبر الدورات" ---
+            // كود الجافا سكربت الخاص بك لم يتغير أبداً
             const yearlyData = JSON.parse(localStorage.getItem('massar_semesters_v2') || "{}");
-            
-            // الأسماء s1 و s2 و result هي التي يستخدمها الكود الذي أرسلته أنت
             const s1 = yearlyData.s1 || "--"; 
             const s2 = yearlyData.s2 || "--";
             const total = yearlyData.result || "--";
@@ -128,7 +135,6 @@
             document.getElementById('s2-val').innerText = s2;
             document.getElementById('total-val').innerText = total;
 
-            // --- الربط مع تفاصيل المواد (محاكي التنقيط أو حاسبة المواد) ---
             const detailedData = JSON.parse(localStorage.getItem('massar_detailed_v5') || "{}");
             const quickData = JSON.parse(localStorage.getItem('massar_subjects_v5') || "{}");
             

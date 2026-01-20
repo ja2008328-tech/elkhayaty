@@ -13,13 +13,24 @@
             --correct: #2ecc71; 
             --bg: #0f172a; 
             --card: #1e293b; 
-            --primary: #2ecc71; /* لون التناسق الأخضر للشريط */
+            --primary: #2ecc71; 
         }
+
+        /* --- أنيميشن التنقل (Page Transition) --- */
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-transition {
+            animation: fadeInPage 0.8s ease-out forwards;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
         
         body { background-color: var(--bg); color: white; overflow-x: hidden; }
 
-        /* --- شريط التنقل الموحد (شكل البداية) --- */
+        /* --- شريط التنقل --- */
         nav { 
             background: var(--card); 
             padding: 15px 5%; 
@@ -82,7 +93,6 @@
 
         footer { text-align: center; padding: 40px; color: #475569; font-size: 0.8rem; font-weight: 600; }
 
-        /* --- إضافات التوافق مع الهاتف --- */
         @media (max-width: 600px) {
             .header-area h1 { font-size: 1.6rem; }
             .grid { grid-template-columns: 1fr; }
@@ -92,8 +102,7 @@
         }
     </style>
 </head>
-<body>
-    <nav>
+<body class="page-transition"> <nav>
         <div class="nav-logo">الفيزياء و الكيمياء</div>
         <a href="subjects.html" class="nav-link">العودة</a>
     </nav>
