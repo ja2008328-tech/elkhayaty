@@ -2,56 +2,654 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>Monument Valley - VS Code Version</title>
+    <title>Monument Valley - Massive Sky Lake</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { margin: 0; overflow: hidden; background: #fce4ec; }
-        #ui { position: absolute; top: 20px; left: 20px; color: white; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; font-family: sans-serif; }
+        /* هذا الكود يحدد شكل نافذة المتجر */
+#shop-ui {
+    display: none; /* مخفي لا يظهر إلا عند ضغط حرف B */
+    position: absolute; 
+    top: 50%; left: 50%; 
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8); 
+    color: white; padding: 20px; 
+    border-radius: 15px; border: 2px solid #00bcd4;
+    z-index: 1000; min-width: 250px;
+}
+        body { margin: 0; overflow: hidden; background-color: #fce4ec; }
+        canvas { display: block; }
+        #ui { 
+            position: absolute; top: 20px; left: 20px; 
+            color: white; font-family: 'Segoe UI', sans-serif; 
+            background: rgba(0,0,0,0.5); padding: 15px; border-radius: 12px; 
+            border-left: 5px solid #00bcd4; pointer-events: none; z-index: 100;
+        }
+        #inventory {
+            position: absolute; bottom: 20px; left: 20px;
+            color: white; font-family: 'Segoe UI', sans-serif;
+            background: rgba(0,0,0,0.6); padding: 15px; border-radius: 12px;
+            z-index: 100; min-width: 150px;
+        }
+        #interaction-hint {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff; font-family: 'Segoe UI', sans-serif;
+            background: rgba(0,0,0,0.4); padding: 8px 16px;
+            border-radius: 20px; display: none; pointer-events: none;
+        }
     </style>
 </head>
 <body>
-    <div id="ui">استخدم WASD للحركة - تشغيل عبر VS Code</div>
 
-    <script type="importmap">
+<div id="ui">
+    <b>الجزيرة العائمة العظمى</b><br>
+    • النطاق: 10,000 وحدة (جزيرة دائرية مثالية)<br>
+    • البيئة: غابات وأحجار هندسية إجرائية<br>
+    • التصميم: طراز Monument Valley الفني<br>
+    • التحكم: WASD للحركة، E للحصاد
+</div>
+
+<div id="inventory">
+    <b>المخزون</b><br>
+    خشب: <span id="wood-count">0</span><br>
+    حجر: <span id="stone-count">0</span>
+</div>
+
+<div id="shop-ui">
+    <h3 style="text-align:center">متجر الصناعة</h3>
+    <div id="item-list"></div> <button onclick="window.toggleShop()" style="width:100%; margin-top:10px;">إغلاق (B)</button>
+</div>
+
+<div id="interaction-hint">اضغط E للحصاد</div>
+
+<script type="importmap">
     {
         "imports": {
             "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
             "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
         }
     }
-    </script>
+</script>
 
-    <script type="module">
-        import * as THREE from 'three';
-        // ملاحظة: المسار يبدأ بـ ./ ليعرف المتصفح أنه ملف محلي
-        import { createPlayer } from './js/player.js';
+<script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    
+    // تم تصحيح مسار الاستيراد لضمان التوافق مع خادم الويب المحلي
+    import { createPlayer as externalCreatePlayer } from './js/player.js';
 
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xffe4e1);
+    let scene, camera, renderer, controls, player, water, terrain;
+    let clouds = [], dustParticles;
+    const ISLAND_RADIUS = 10000; 
+    const LAKE_RADIUS = 1000;   
+    const WALL_HEIGHT = 60;
+    const input = { w: false, s: false, a: false, d: false, e: false };
+    let smoothTarget = new THREE.Vector3();
+
+    // متغيرات نظام البيئة المتقدمة والمخزون
+    let forestGroup = new THREE.Group();
+    const obstacleData = []; 
+    const inventory = { wood: 0, stone: 0 };
+    const particles = [];
+    const fadingObjects = []; // تتبع الكائنات التي تتلاشى حالياً
+    let currentVelocity = new THREE.Vector3(0, 0, 0); // تعريف متغير السرعة للحركة الانسيابية
+
+    init();
+    animate();
+
+    function init() { 
         
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 20000);
-        camera.position.set(1000, 1000, 1000);
+        scene = new THREE.Scene();
+        // تعديل اللون إلى وردي فاتح (Pastel Pink) لضمان عدم ظهور لون بنفسجي
+        const pinkSky = 0xffe4e1; 
+        scene.background = new THREE.Color(pinkSky); 
+        scene.fog = new THREE.Fog(pinkSky, 5000, 25000); 
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const aspect = window.innerWidth / window.innerHeight;
+        const d = 600; // تقليل القيمة لعمل تقريب (Zoom In)
+        camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, -15000, 30000);
+        camera.position.set(2000, 1500, 2000); // تقريب موضع الكاميرا الفعلي
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
         document.body.appendChild(renderer.domElement);
 
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(500, 1000, 500);
-        scene.add(light, new THREE.AmbientLight(0xffffff, 0.5));
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        const sun = new THREE.DirectionalLight(0xffffff, 1.5);
+        sun.position.set(4000, 3000, 2000); 
+        sun.castShadow = true;
+        sun.shadow.camera.left = -12000;
+        sun.shadow.camera.right = 12000;
+        sun.shadow.camera.top = 12000;
+        sun.shadow.camera.bottom = -12000;
+        sun.shadow.camera.far = 25000;
+        sun.shadow.mapSize.set(4096, 4096); 
+        sun.shadow.bias = -0.0005;
+        scene.add(sun);
 
-        // إنشاء الأرضية بسيطة
-        const ground = new THREE.Mesh(new THREE.PlaneGeometry(5000, 5000), new THREE.MeshStandardMaterial({color: 0x95cc95}));
-        ground.rotation.x = -Math.PI / 2;
-        scene.add(ground);
+        createMassiveArtisticIsland();
+        createDeepLake();
+        createAtmosphericClouds();
+        createDustSystem();
+        createAdvancedEnvironment(); 
+        
+        // استخدام الدالة المستوردة من ملف اللاعب الخارجي
+        player = externalCreatePlayer(scene, LAKE_RADIUS);
+        
+        setupInputs();
 
-        const player = createPlayer(scene, 1000);
+        controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableRotate = false;
+        controls.enablePan = false;
+    }
 
-        function animate() {
-            requestAnimationFrame(animate);
-            camera.lookAt(player.position);
-            renderer.render(scene, camera);
+    function createMassiveArtisticIsland() {
+        const islandShape = new THREE.Shape();
+        islandShape.absarc(0, 0, ISLAND_RADIUS, 0, Math.PI * 2, false);
+        
+        const lakeHole = new THREE.Path();
+        lakeHole.absarc(0, 0, LAKE_RADIUS, 0, Math.PI * 2, true);
+        islandShape.holes.push(lakeHole);
+
+        const extrudeSettings = { depth: 40, bevelEnabled: true, bevelSize: 10, bevelThickness: 20 };
+        const geometry = new THREE.ExtrudeGeometry(islandShape, extrudeSettings);
+
+        const material = new THREE.MeshStandardMaterial({ 
+            color: 0x95cc95, 
+            flatShading: true,
+            metalness: 0.2, 
+            roughness: 0.6,
+            emissive: 0x223322,
+            emissiveIntensity: 0.05
+        });
+        
+        terrain = new THREE.Mesh(geometry, material);
+        terrain.rotation.x = -Math.PI / 2; 
+        terrain.position.y = 40;
+        terrain.receiveShadow = true;
+        terrain.castShadow = true;
+        scene.add(terrain);
+
+        const baseGeo = new THREE.CylinderGeometry(ISLAND_RADIUS, 500, 4000, 64);
+        const baseMat = new THREE.MeshStandardMaterial({ color: 0x7b6d66, flatShading: true });
+        const base = new THREE.Mesh(baseGeo, baseMat);
+        base.position.y = -2000;
+        scene.add(base);
+    }
+
+    function createDeepLake() {
+        const wallGeo = new THREE.TorusGeometry(LAKE_RADIUS + 10, 15, 16, 100);
+        const marbleMat = new THREE.MeshStandardMaterial({ color: 0xf5f5f5, roughness: 0.1 });
+        const lakeWall = new THREE.Mesh(wallGeo, marbleMat);
+        lakeWall.rotation.x = Math.PI / 2;
+        lakeWall.position.y = 85; 
+        lakeWall.castShadow = true;
+        scene.add(lakeWall);
+
+        const goldGeo = new THREE.TorusGeometry(LAKE_RADIUS + 10, 5, 16, 100);
+        const goldMat = new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.8, roughness: 0.2 });
+        const goldRim = new THREE.Mesh(goldGeo, goldMat);
+        goldRim.rotation.x = Math.PI / 2;
+        goldRim.position.y = 95;
+        scene.add(goldRim);
+
+        const ornamentGeo = new THREE.TorusGeometry(20, 5, 16, 32);
+        for (let i = 0; i < 24; i++) {
+            const angle = (i / 24) * Math.PI * 2;
+            const ornament = new THREE.Mesh(ornamentGeo, goldMat);
+            const r = LAKE_RADIUS + 10;
+            ornament.position.set(Math.cos(angle) * r, 110, Math.sin(angle) * r);
+            ornament.rotation.y = angle;
+            ornament.castShadow = true;
+            scene.add(ornament);
         }
-        animate();
-    </script>
+
+        const waterGeo = new THREE.CylinderGeometry(LAKE_RADIUS, LAKE_RADIUS, 20, 64);
+        const waterMat = new THREE.MeshPhongMaterial({ 
+            color: 0x00d4ff, 
+            transparent: true, 
+            opacity: 0.8,
+            emissive: 0x00ffff,
+            emissiveIntensity: 0.5,
+            shininess: 120
+        });
+        water = new THREE.Mesh(waterGeo, waterMat);
+        water.position.y = 60; 
+        scene.add(water);
+
+        const floorGeo = new THREE.CircleGeometry(LAKE_RADIUS, 64);
+        const floorMat = new THREE.MeshStandardMaterial({ color: 0x00838f });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -10;
+        scene.add(floor);
+    }
+
+    function createDustSystem() {
+        const count = 3000;
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(count * 3);
+        for (let i = 0; i < count * 3; i += 3) {
+            const r = Math.sqrt(Math.random()) * ISLAND_RADIUS * 1.2;
+            const theta = Math.random() * Math.PI * 2;
+            pos[i] = Math.cos(theta) * r;
+            pos[i+1] = Math.random() * 800;
+            pos[i+2] = Math.sin(theta) * r;
+        }
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const mat = new THREE.PointsMaterial({ color: 0xffffff, size: 4, transparent: true, opacity: 0.3 });
+        dustParticles = new THREE.Points(geo, mat);
+        scene.add(dustParticles);
+    }
+
+    function createAtmosphericClouds() {
+        const cloudMat = new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.4 });
+        for (let i = 0; i < 80; i++) {
+            const geo = new THREE.IcosahedronGeometry(200 + Math.random() * 400, 0);
+            const cloud = new THREE.Mesh(geo, cloudMat);
+            cloud.position.set(
+                (Math.random() - 0.5) * 25000, 
+                -3000 + (Math.random() * 1500), 
+                (Math.random() - 0.5) * 25000
+            );
+            scene.add(cloud);
+            clouds.push(cloud);
+        }
+    }
+
+    // --- نظام الجزيئات (Particles) ---
+    function spawnParticles(pos, color) {
+        const count = 15;
+        for (let i = 0; i < count; i++) {
+            const pGeo = new THREE.BoxGeometry(8, 8, 8);
+            const pMat = new THREE.MeshStandardMaterial({ color: color, flatShading: true, transparent: true });
+            const p = new THREE.Mesh(pGeo, pMat);
+            p.position.copy(pos);
+            p.position.y += 30;
+            const vel = new THREE.Vector3(
+                (Math.random() - 0.5) * 12,
+                Math.random() * 18,
+                (Math.random() - 0.5) * 12
+            );
+            particles.push({ mesh: p, vel: vel, life: 1.0 });
+            scene.add(p);
+        }
+    }
+
+    // --- نظام البيئة المتقدم مع ميكانيكا الحصاد ---
+    function createAdvancedAsset(type, x, z) {
+        const asset = new THREE.Group();
+        let collisionRadius = 40;
+        const scale = 0.8 + Math.random() * 0.7;
+        let mainColor = 0xffffff;
+        let isTree = ['A', 'B', 'C', 'D'].includes(type);
+
+        if (isTree) {
+            const trunkMat = new THREE.MeshStandardMaterial({ color: 0x8d6e63, flatShading: true, transparent: true });
+            switch (type) {
+                case 'A': 
+                    const tA = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 80, 6), trunkMat);
+                    tA.position.y = 40;
+                    mainColor = 0xb2dfdb;
+                    const topA = new THREE.Mesh(new THREE.ConeGeometry(25, 100, 6), new THREE.MeshStandardMaterial({ color: mainColor, flatShading: true, transparent: true }));
+                    topA.position.y = 110;
+                    asset.add(tA, topA);
+                    collisionRadius = 30;
+                    break;
+                case 'B':
+                    const tB = new THREE.Mesh(new THREE.CylinderGeometry(10, 10, 40, 6), trunkMat);
+                    tB.position.y = 20;
+                    mainColor = 0xf8bbd0;
+                    const sColors = [0xf8bbd0, 0xf48fb1, 0xf06292];
+                    for(let i=0; i<3; i++) {
+                        const s = new THREE.Mesh(new THREE.SphereGeometry(30 - i*7, 6, 6), new THREE.MeshStandardMaterial({ color: sColors[i], flatShading: true, transparent: true }));
+                        s.position.y = 50 + i*30;
+                        asset.add(s);
+                    }
+                    asset.add(tB);
+                    collisionRadius = 40;
+                    break;
+                case 'C':
+                    const tC = new THREE.Mesh(new THREE.BoxGeometry(25, 30, 25), trunkMat);
+                    tC.position.y = 15;
+                    mainColor = 0xfff9c4;
+                    const topC = new THREE.Mesh(new THREE.OctahedronGeometry(35, 0), new THREE.MeshStandardMaterial({ color: mainColor, flatShading: true, transparent: true }));
+                    topC.position.y = 70;
+                    asset.add(tC, topC);
+                    collisionRadius = 35;
+                    break;
+                case 'D':
+                    mainColor = 0xa5d6a7;
+                    const shrubMat = new THREE.MeshStandardMaterial({ color: mainColor, flatShading: true, transparent: true });
+                    for(let i=0; i<4; i++) {
+                        const s = new THREE.Mesh(new THREE.IcosahedronGeometry(15, 0), shrubMat);
+                        s.position.set(Math.random()*20-10, 10, Math.random()*20-10);
+                        asset.add(s);
+                    }
+                    collisionRadius = 25;
+                    break;
+            }
+        } else {
+            const stoneMat = new THREE.MeshStandardMaterial({ color: 0x90a4ae, flatShading: true, transparent: true });
+            mainColor = 0x90a4ae;
+            switch (type) {
+                case 'S1': 
+                    const b1 = new THREE.Mesh(new THREE.IcosahedronGeometry(40, 0), stoneMat);
+                    b1.position.y = 30;
+                    b1.rotation.set(Math.random(), Math.random(), Math.random());
+                    asset.add(b1);
+                    collisionRadius = 45;
+                    break;
+                case 'S2': 
+                    for(let i=0; i<3; i++) {
+                        const r = new THREE.Mesh(new THREE.BoxGeometry(60 - i*15, 15, 50 - i*10), stoneMat);
+                        r.position.y = 7.5 + i*15;
+                        r.rotation.y = (Math.random()-0.5) * 0.5;
+                        asset.add(r);
+                    }
+                    collisionRadius = 40;
+                    break;
+                case 'S3': 
+                    mainColor = 0xe1f5fe;
+                    const p1 = new THREE.Mesh(new THREE.CylinderGeometry(5, 15, 70, 4), new THREE.MeshStandardMaterial({ color: mainColor, flatShading: true, transparent: true, opacity: 0.9 }));
+                    p1.position.y = 35;
+                    asset.add(p1);
+                    collisionRadius = 20;
+                    break;
+            }
+        }
+
+        asset.scale.set(scale, scale, scale);
+        asset.position.set(x, 80, z); 
+        asset.rotation.y = Math.random() * Math.PI * 2;
+        asset.traverse(c => { if(c.isMesh) { c.castShadow = true; c.receiveShadow = true; }});
+        
+        forestGroup.add(asset);
+        obstacleData.push({ 
+            mesh: asset, 
+            x, z, 
+            radius: collisionRadius * scale, 
+            health: 3, 
+            type: isTree ? 'wood' : 'stone',
+            color: mainColor,
+            originalScale: scale,
+            isFading: false
+        });
+    }
+
+    function createAdvancedEnvironment() {
+        const totalAssets = 450; 
+        const types = ['A', 'B', 'C', 'D', 'S1', 'S2', 'S3'];
+
+        for (let i = 0; i < totalAssets; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const r = LAKE_RADIUS + 600 + Math.sqrt(Math.random()) * (ISLAND_RADIUS - LAKE_RADIUS - 1000);
+            const x = Math.cos(angle) * r;
+            const z = Math.sin(angle) * r;
+
+            const type = types[Math.floor(Math.random() * types.length)];
+            createAdvancedAsset(type, x, z);
+        }
+        scene.add(forestGroup);
+    }
+
+    
+    function setupInputs() {
+        window.addEventListener('keydown', (e) => { 
+            const key = e.key.toLowerCase();
+            if (key in input) input[key] = true; 
+        });
+        window.addEventListener('keyup', (e) => { 
+            const key = e.key.toLowerCase();
+            if (key in input) input[key] = false; 
+        });
+    }
+
+    function harvestObstacle(obs, index) {
+        if (obs.isFading) return;
+        obs.health--;
+        
+        // تأثير الاهتزاز والضرب (Impact Jitter)
+        const mesh = obs.mesh;
+        const jitter = 0.15;
+        mesh.position.x += (Math.random() - 0.5) * jitter * 100;
+        mesh.position.z += (Math.random() - 0.5) * jitter * 100;
+        
+        const impactScale = obs.originalScale * 1.15;
+        mesh.scale.set(impactScale, obs.originalScale * 0.85, impactScale);
+        
+        setTimeout(() => {
+            if (mesh.parent && !obs.isFading) {
+                mesh.scale.set(obs.originalScale, obs.originalScale, obs.originalScale);
+                mesh.position.x = obs.x;
+                mesh.position.z = obs.z;
+            }
+        }, 80);
+
+        if (obs.health <= 0) {
+            obs.isFading = true;
+            
+            // بدء عملية التلاشي والذوبان
+            fadingObjects.push({
+                obs: obs,
+                progress: 0,
+                duration: 0.6 // بالثواني تقريباً عبر animate
+            });
+            
+            // تحديث المخزون
+            inventory[obs.type] += Math.floor(Math.random() * 3) + 2;
+            document.getElementById(obs.type + '-count').innerText = inventory[obs.type];
+            
+            // إزالة من التصادم فوراً
+            obstacleData.splice(index, 1);
+        }
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        if (player) {
+            // تأثير الطفو الهادئ
+            const floatingY = 130 + Math.sin(Date.now() * 0.003) * 15;
+            player.position.y = THREE.MathUtils.lerp(player.position.y, floatingY, 0.1);
+
+            // --- الكود المجمع للسرعة والانسيابية والمنظور ---
+            let targetDir = new THREE.Vector3(0, 0, 0);
+            if (input.w) targetDir.z -= 1;
+            if (input.s) targetDir.z += 1;
+            if (input.a) targetDir.x -= 1;
+            if (input.d) targetDir.x += 1;
+            if (targetDir.length() > 0) targetDir.normalize();
+
+            const targetSpeed = 12;      // سرعة هادئة
+            const acceleration = 0.07;  // انسيابية الحركة
+            currentVelocity.lerp(targetDir.multiplyScalar(targetSpeed), acceleration);
+
+            const nextPos = player.position.clone().add(currentVelocity);
+
+            // فحص التصادم مع العوائق والبحيرة
+            let collision = false;
+            const dist = Math.sqrt(nextPos.x**2 + nextPos.z**2);
+            if (dist < LAKE_RADIUS + 40) {
+                collision = true;
+            } else {
+                for (const obs of obstacleData) {
+                    const dx = nextPos.x - obs.x;
+                    const dz = nextPos.z - obs.z;
+                    const d = Math.sqrt(dx*dx + dz*dz);
+                    if (d < obs.radius + 15) { 
+                        collision = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!collision) {
+                player.position.copy(nextPos);
+            } else {
+                currentVelocity.set(0, 0, 0);
+            }
+
+            // دوران انسيابي باتجاه الحركة
+            if (currentVelocity.length() > 0.1) {
+                const targetRotation = Math.atan2(currentVelocity.x, currentVelocity.z);
+                player.rotation.y = THREE.MathUtils.lerp(player.rotation.y, targetRotation, 0.1);
+            }
+
+            // حدود الجزيرة الخارجية
+            const safeBoundary = ISLAND_RADIUS - 200;
+            if (dist > safeBoundary) {
+                const angle = Math.atan2(player.position.z, player.position.x);
+                player.position.x = Math.cos(angle) * safeBoundary;
+                player.position.z = Math.sin(angle) * safeBoundary;
+                currentVelocity.set(0, 0, 0);
+            }
+
+            // تتبع الكاميرا (المنظور القريب)
+            smoothTarget.lerp(player.position, 0.1);
+            camera.position.set(smoothTarget.x + 1500, smoothTarget.y + 1200, smoothTarget.z + 1500);
+            controls.target.copy(smoothTarget);
+            // ----------------------------------------------
+
+            // فحص القرب للتفاعل (E)
+            let nearestObs = null;
+            let minDist = 150;
+            let nearestIdx = -1;
+
+            for (let i = 0; i < obstacleData.length; i++) {
+                const obs = obstacleData[i];
+                if (obs.isFading) continue;
+                const dx = player.position.x - obs.x;
+                const dz = player.position.z - obs.z;
+                const d = Math.sqrt(dx*dx + dz*dz);
+                if (d < obs.radius + 100 && d < minDist) {
+                    minDist = d;
+                    nearestObs = obs;
+                    nearestIdx = i;
+                }
+            }
+
+            const hint = document.getElementById('interaction-hint');
+            if (nearestObs) {
+                hint.style.display = 'block';
+                if (input.e) {
+                    harvestObstacle(nearestObs, nearestIdx);
+                    input.e = false; 
+                }
+            } else {
+                hint.style.display = 'none';
+            }
+        }
+
+        // تحديث كائنات التلاشي (Dissolve & Shrink)
+        for (let i = fadingObjects.length - 1; i >= 0; i--) {
+            const item = fadingObjects[i];
+            item.progress += 0.025; 
+            const factor = 1.0 - item.progress;
+            
+            if (item.progress >= 1.0) {
+                spawnParticles(item.obs.mesh.position, item.obs.color);
+                forestGroup.remove(item.obs.mesh);
+                fadingObjects.splice(i, 1);
+            } else {
+                const s = item.obs.originalScale * Math.max(0.1, factor);
+                item.obs.mesh.scale.set(s, s, s);
+                item.obs.mesh.traverse(child => {
+                    if (child.isMesh) {
+                        child.material.opacity = factor;
+                    }
+                });
+            }
+        }
+
+        // تحديث الجزيئات
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.mesh.position.add(p.vel);
+            p.vel.y -= 0.6; 
+            p.life -= 0.025;
+            p.mesh.scale.setScalar(p.life);
+            if (p.mesh.material) p.mesh.material.opacity = p.life;
+            if (p.life <= 0) {
+                scene.remove(p.mesh);
+                particles.splice(i, 1);
+            }
+        }
+
+        clouds.forEach(c => {
+            c.position.x += 1.5;
+            if (c.position.x > 15000) c.position.x = -15000;
+        });
+        if (dustParticles) {
+            dustParticles.rotation.y += 0.0005;
+            dustParticles.position.y = Math.sin(Date.now() * 0.0005) * 20;
+        }
+
+        if (water) {
+            water.position.y = 60 + Math.sin(Date.now() * 0.002) * 4;
+            water.material.emissiveIntensity = 0.5 + Math.sin(Date.now() * 0.003) * 0.15;
+        }
+
+        controls.update();
+        renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+        const aspect = window.innerWidth / window.innerHeight;
+        const d = 600; // الحفاظ على التقريب عند تغيير الحجم
+        camera.left = -d * aspect; camera.right = d * aspect;
+        camera.top = d; camera.bottom = -d;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+    // قائمة الأشياء التي يمكن صنعها
+const recipes = [
+    { id: 'axe', name: 'فأس حجري', wood: 10, stone: 5 },
+    { id: 'wall', name: 'جدار حماية', wood: 0, stone: 20 }
+];
+
+// دالة لفتح وإغلاق المتجر
+window.toggleShop = function() {
+    const shop = document.getElementById('shop-ui');
+    shop.style.display = (shop.style.display === 'none' || shop.style.display === '') ? 'block' : 'none';
+    if(shop.style.display === 'block') renderShop();
+};
+
+// دالة لعرض الأدوات في المتجر
+function renderShop() {
+    const list = document.getElementById('item-list');
+    list.innerHTML = ''; 
+    recipes.forEach(item => {
+        const canBuy = inventory.wood >= item.wood && inventory.stone >= item.stone;
+        list.innerHTML += `
+            <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                <span>${item.name}</span>
+                <button onclick="window.buyItem('${item.id}')" ${!canBuy ? 'disabled' : ''}>صناعة</button>
+            </div>`;
+    });
+}
+
+// دالة الشراء وخصم اللوت
+window.buyItem = function(id) {
+    const item = recipes.find(r => r.id === id);
+    if(inventory.wood >= item.wood && inventory.stone >= item.stone) {
+        inventory.wood -= item.wood;
+        inventory.stone -= item.stone;
+        // تحديث أرقام المخزون على الشاشة
+        document.getElementById('wood-count').innerText = inventory.wood;
+        document.getElementById('stone-count').innerText = inventory.stone;
+        alert("تمت صناعة " + item.name);
+        renderShop();
+    }
+};
+
+// ربط حرف B بفتح المتجر
+window.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'b') window.toggleShop();
+});
+
+</script>
 </body>
 </html>
