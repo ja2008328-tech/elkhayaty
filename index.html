@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Monument Valley - Massive Sky Lake</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="ui">
+    <b>الجزيرة العائمة العظمى</b><br>
+    • النطاق: 10,000 وحدة (جزيرة دائرية مثالية)<br>
+    • البيئة: غابات وأحجار هندسية إجرائية<br>
+    • التصميم: طراز Monument Valley الفني<br>
+    • التحكم: WASD للحركة، E للحصاد، B للمتجر
+</div>
+
+<div id="inventory">
+    <b>المخزون</b><br>
+    خشب: <span id="wood-count">0</span><br>
+    حجر: <span id="stone-count">0</span>
+</div>
+
+<div id="shop-overlay"></div>
+<div id="shop-ui">
+    <h3 style="text-align:center">متجر الصناعة</h3>
+    <div id="item-list"></div> 
+    <button onclick="window.toggleShop()" style="width:100%; margin-top:10px;">إغلاق (B)</button>
+</div>
+
+<div id="interaction-hint">اضغط E للحصاد</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+</script>
+
+<script type="module" src="./src/js/main.js"></script>
+</body>
+</html>
